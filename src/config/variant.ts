@@ -1,8 +1,8 @@
-// Valid variants including Ireland
-type Variant = 'full' | 'tech' | 'finance' | 'happy' | 'commodity' | 'ireland';
+// Valid variants including Ireland and Adult Industry
+type Variant = 'full' | 'tech' | 'finance' | 'happy' | 'commodity' | 'ireland' | 'adult-industry';
 
 const isValidVariant = (v: string): v is Variant =>
-  ['full', 'tech', 'finance', 'happy', 'commodity', 'ireland'].includes(v);
+  ['full', 'tech', 'finance', 'happy', 'commodity', 'ireland', 'adult-industry'].includes(v);
 
 const buildVariant = (() => {
   try {
@@ -29,6 +29,7 @@ export const SITE_VARIANT: string = (() => {
   if (h.startsWith('happy.')) return 'happy';
   if (h.startsWith('commodity.')) return 'commodity';
   if (h.startsWith('ireland.') || h.includes('ireland-monitor')) return 'ireland';
+  if (h.includes('adult-industry') || h.includes('europe-adult')) return 'adult-industry';
 
   if (h === 'localhost' || h === '127.0.0.1') {
     const stored = localStorage.getItem('worldmonitor-variant');
