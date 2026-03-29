@@ -8,8 +8,10 @@
 export * from './data/brands';
 export * from './data/retailers';
 export * from './data/regulations';
+export * from './data/events';
 
 // Layer exports
 export * from './layers/brands-layer';
 export * from './layers/retailers-layer';
 export * from './layers/regulations-layer';
+export * from './layers/events-layer';
