@@ -95,6 +95,13 @@ export function isIrelandVariant(): boolean {
 }
 
 /**
+ * Check if current variant is Adult Industry
+ */
+export function isAdultIndustryVariant(): boolean {
+  return SITE_VARIANT === 'adult-industry';
+}
+
+/**
  * Get minimum zoom level for current variant
  */
 export function getMinZoom(): number {

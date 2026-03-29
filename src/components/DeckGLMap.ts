@@ -21,6 +21,17 @@ import {
   type IrelandAICompany,
   type IrelandUniversity,
 } from '@/config/variants/ireland/data';
+// Adult industry variant data and layers
+import {
+  createBrandsLayer,
+  createRetailersLayer,
+  createEventsLayer,
+  createFactoriesLayer,
+  formatBrandInfo,
+  formatRetailerInfo,
+  formatEventInfo,
+  formatFactoryInfo,
+} from '@/config/variants/adult-industry/index';
 // FR #207: Modular layer imports
 import {
   createSubmarineCablesLayer,
@@ -120,6 +131,7 @@ import {
   COMMODITY_PORTS as COMMODITY_GEO_PORTS,
   getMapConfig,
   isIrelandVariant,
+  isAdultIndustryVariant,
 } from '@/config';
 import type { GulfInvestment } from '@/types';
 import { resolveTradeRouteSegments, TRADE_ROUTES as TRADE_ROUTES_LIST, type TradeRouteSegment } from '@/config/trade-routes';
@@ -1612,6 +1624,26 @@ export class DeckGLMap {
     const irelandTechFallback = this.createIrelandTechFallbackLayer(mapLayers);
     if (irelandTechFallback) {
       layers.push(irelandTechFallback);
+    }
+
+    // Adult industry variant layers
+    if (isAdultIndustryVariant()) {
+      // Always show adult industry layers (brands, retailers, regulations, events, factories)
+      layers.push(
+        createBrandsLayer({
+          onClick: (info) => this.handleAdultIndustryClick(info, 'brand'),
+        }),
+        createRetailersLayer({
+          onClick: (info) => this.handleAdultIndustryClick(info, 'retailer'),
+        }),
+        createEventsLayer({
+          onClick: (info) => this.handleAdultIndustryClick(info, 'event'),
+        }),
+        createFactoriesLayer({
+          onClick: (info) => this.handleAdultIndustryClick(info, 'factory'),
+        }),
+      );
+      // Regulations layer requires GeoJSON data (skip for now, needs separate implementation)
     }
 
     // Gulf FDI investments layer
@@ -4201,6 +4233,84 @@ export class DeckGLMap {
       x,
       y,
     });
+  }
+
+  /**
+   * Handle clicks on adult industry variant layers
+   */
+  private handleAdultIndustryClick(
+    info: PickingInfo,
+    type: 'brand' | 'retailer' | 'event' | 'factory'
+  ): void {
+    if (!info.object) return;
+
+    const x = info.x ?? 0;
+    const y = info.y ?? 0;
+
+    // Format info based on type
+    let content: string;
+    switch (type) {
+      case 'brand':
+        content = formatBrandInfo(info.object);
+        break;
+      case 'retailer':
+        content = formatRetailerInfo(info.object);
+        break;
+      case 'event':
+        content = formatEventInfo(info.object);
+        break;
+      case 'factory':
+        content = formatFactoryInfo(info.object);
+        break;
+    }
+
+    // Show simple tooltip popup
+    this.showAdultIndustryPopup(content, x, y);
+  }
+
+  /**
+   * Show a simple popup for adult industry data
+   */
+  private showAdultIndustryPopup(content: string, x: number, y: number): void {
+    // Remove any existing popup
+    this.container.querySelector('.deckgl-adult-industry-popup')?.remove();
+
+    const popup = document.createElement('div');
+    popup.className = 'deckgl-adult-industry-popup';
+    popup.style.cssText = `
+      position: absolute;
+      left: ${x}px;
+      top: ${y}px;
+      z-index: 1000;
+      background: var(--bg-primary, #1a1a2e);
+      color: var(--text-primary, #fff);
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      max-width: 350px;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      pointer-events: auto;
+    `;
+
+    // Convert markdown-style formatting to HTML
+    const htmlContent = content
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    
+    popup.innerHTML = htmlContent;
+
+    // Close on click outside
+    const closeHandler = (e: MouseEvent) => {
+      if (!popup.contains(e.target as Node)) {
+        popup.remove();
+        document.removeEventListener('click', closeHandler);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 100);
+
+    this.container.appendChild(popup);
   }
 
   private async showWebcamClickPopup(webcam: WebcamEntry, x: number, y: number): Promise<void> {
