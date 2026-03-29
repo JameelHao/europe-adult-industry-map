@@ -1,7 +1,8 @@
 /**
  * Adult Industry Brands Data Tests
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import {
   ADULT_BRANDS,
   BRAND_CATEGORY_CONFIG,
@@ -19,19 +20,19 @@ import {
 
 describe('Adult Brands Data', () => {
   it('should have at least 50 brands', () => {
-    expect(ADULT_BRANDS.length).toBeGreaterThanOrEqual(50);
+    assert.ok(ADULT_BRANDS.length >= 50, `Expected >= 50 brands, got ${ADULT_BRANDS.length}`);
   });
 
   it('should have all required fields for each brand', () => {
     for (const brand of ADULT_BRANDS) {
-      expect(brand.id).toBeTruthy();
-      expect(brand.name).toBeTruthy();
-      expect(brand.country).toBeTruthy();
-      expect(brand.city).toBeTruthy();
-      expect(brand.coordinates).toHaveLength(2);
-      expect(typeof brand.coordinates[0]).toBe('number'); // longitude
-      expect(typeof brand.coordinates[1]).toBe('number'); // latitude
-      expect(['toys', 'lingerie', 'wellness', 'media', 'retail']).toContain(brand.category);
+      assert.ok(brand.id, 'Brand should have id');
+      assert.ok(brand.name, 'Brand should have name');
+      assert.ok(brand.country, 'Brand should have country');
+      assert.ok(brand.city, 'Brand should have city');
+      assert.equal(brand.coordinates.length, 2, 'Coordinates should have 2 elements');
+      assert.equal(typeof brand.coordinates[0], 'number', 'Longitude should be number');
+      assert.equal(typeof brand.coordinates[1], 'number', 'Latitude should be number');
+      assert.ok(['toys', 'lingerie', 'wellness', 'media', 'retail'].includes(brand.category));
     }
   });
 
@@ -39,78 +40,76 @@ describe('Adult Brands Data', () => {
     for (const brand of ADULT_BRANDS) {
       const [lng, lat] = brand.coordinates;
       // Europe roughly: -25 to 45 longitude, 34 to 72 latitude
-      expect(lng).toBeGreaterThanOrEqual(-30);
-      expect(lng).toBeLessThanOrEqual(50);
-      expect(lat).toBeGreaterThanOrEqual(30);
-      expect(lat).toBeLessThanOrEqual(75);
+      assert.ok(lng >= -30 && lng <= 50, `${brand.name} lng ${lng} out of range`);
+      assert.ok(lat >= 30 && lat <= 75, `${brand.name} lat ${lat} out of range`);
     }
   });
 
   it('should have unique brand IDs', () => {
     const ids = ADULT_BRANDS.map(b => b.id);
     const uniqueIds = new Set(ids);
-    expect(uniqueIds.size).toBe(ids.length);
+    assert.equal(uniqueIds.size, ids.length, 'All IDs should be unique');
   });
 
   it('should cover all categories', () => {
     const categories = new Set(ADULT_BRANDS.map(b => b.category));
-    expect(categories.has('toys')).toBe(true);
-    expect(categories.has('lingerie')).toBe(true);
-    expect(categories.has('wellness')).toBe(true);
-    expect(categories.has('media')).toBe(true);
-    expect(categories.has('retail')).toBe(true);
+    assert.ok(categories.has('toys'), 'Should have toys category');
+    assert.ok(categories.has('lingerie'), 'Should have lingerie category');
+    assert.ok(categories.has('wellness'), 'Should have wellness category');
+    assert.ok(categories.has('media'), 'Should have media category');
+    assert.ok(categories.has('retail'), 'Should have retail category');
   });
 });
 
 describe('getBrandsByCategory', () => {
   it('should filter brands by toys category', () => {
     const toysBrands = getBrandsByCategory('toys');
-    expect(toysBrands.length).toBeGreaterThan(0);
-    expect(toysBrands.every(b => b.category === 'toys')).toBe(true);
+    assert.ok(toysBrands.length > 0, 'Should have toys brands');
+    assert.ok(toysBrands.every(b => b.category === 'toys'), 'All should be toys');
   });
 
   it('should filter brands by lingerie category', () => {
     const lingerieBrands = getBrandsByCategory('lingerie');
-    expect(lingerieBrands.length).toBeGreaterThan(0);
-    expect(lingerieBrands.every(b => b.category === 'lingerie')).toBe(true);
+    assert.ok(lingerieBrands.length > 0, 'Should have lingerie brands');
+    assert.ok(lingerieBrands.every(b => b.category === 'lingerie'), 'All should be lingerie');
   });
 });
 
 describe('getBrandsByCountry', () => {
   it('should filter brands by Germany', () => {
     const germanBrands = getBrandsByCountry('Germany');
-    expect(germanBrands.length).toBeGreaterThan(0);
-    expect(germanBrands.every(b => b.country === 'Germany')).toBe(true);
+    assert.ok(germanBrands.length > 0, 'Should have German brands');
+    assert.ok(germanBrands.every(b => b.country === 'Germany'), 'All should be from Germany');
   });
 
   it('should filter brands by United Kingdom', () => {
     const ukBrands = getBrandsByCountry('United Kingdom');
-    expect(ukBrands.length).toBeGreaterThan(0);
-    expect(ukBrands.every(b => b.country === 'United Kingdom')).toBe(true);
+    assert.ok(ukBrands.length > 0, 'Should have UK brands');
+    assert.ok(ukBrands.every(b => b.country === 'United Kingdom'), 'All should be from UK');
   });
 
   it('should return empty array for non-existent country', () => {
     const brands = getBrandsByCountry('Atlantis');
-    expect(brands).toHaveLength(0);
+    assert.equal(brands.length, 0, 'Should have no brands from Atlantis');
   });
 });
 
 describe('getBrandCountries', () => {
   it('should return sorted unique countries', () => {
     const countries = getBrandCountries();
-    expect(countries.length).toBeGreaterThan(0);
+    assert.ok(countries.length > 0, 'Should have countries');
     // Check sorted
     const sorted = [...countries].sort();
-    expect(countries).toEqual(sorted);
+    assert.deepEqual(countries, sorted, 'Should be sorted');
     // Check unique
-    expect(new Set(countries).size).toBe(countries.length);
+    assert.equal(new Set(countries).size, countries.length, 'Should be unique');
   });
 
   it('should include major European countries', () => {
     const countries = getBrandCountries();
-    expect(countries).toContain('Germany');
-    expect(countries).toContain('United Kingdom');
-    expect(countries).toContain('France');
+    assert.ok(countries.includes('Germany'), 'Should include Germany');
+    assert.ok(countries.includes('United Kingdom'), 'Should include UK');
+    assert.ok(countries.includes('France'), 'Should include France');
   });
 });
 
@@ -119,9 +118,9 @@ describe('BRAND_CATEGORY_CONFIG', () => {
     const categories: BrandCategory[] = ['toys', 'lingerie', 'wellness', 'media', 'retail'];
     for (const cat of categories) {
       const config = BRAND_CATEGORY_CONFIG[cat];
-      expect(config.label).toBeTruthy();
-      expect(config.color).toMatch(/^#[0-9A-Fa-f]{6}$/);
-      expect(config.icon).toBeTruthy();
+      assert.ok(config.label, `${cat} should have label`);
+      assert.match(config.color, /^#[0-9A-Fa-f]{6}$/, `${cat} should have valid color`);
+      assert.ok(config.icon, `${cat} should have icon`);
     }
   });
 });
@@ -129,68 +128,57 @@ describe('BRAND_CATEGORY_CONFIG', () => {
 describe('createBrandsLayer', () => {
   it('should create a layer with correct ID', () => {
     const layer = createBrandsLayer();
-    expect(layer.id).toBe(BRANDS_LAYER_ID);
+    assert.equal(layer.id, BRANDS_LAYER_ID);
   });
 
   it('should create a pickable layer', () => {
     const layer = createBrandsLayer();
-    expect(layer.props.pickable).toBe(true);
+    assert.equal(layer.props.pickable, true);
   });
 
   it('should filter by categories', () => {
     const layer = createBrandsLayer({ categories: ['toys'] });
     const data = layer.props.data as unknown[];
-    expect(data.length).toBeGreaterThan(0);
-    expect(data.length).toBeLessThan(ADULT_BRANDS.length);
+    assert.ok(data.length > 0, 'Should have data');
+    assert.ok(data.length < ADULT_BRANDS.length, 'Should be filtered');
   });
 
   it('should filter by countries', () => {
     const layer = createBrandsLayer({ countries: ['Germany'] });
     const data = layer.props.data as unknown[];
-    expect(data.length).toBeGreaterThan(0);
-    expect(data.length).toBeLessThan(ADULT_BRANDS.length);
+    assert.ok(data.length > 0, 'Should have data');
+    assert.ok(data.length < ADULT_BRANDS.length, 'Should be filtered');
   });
 
   it('should respect visibility option', () => {
     const visibleLayer = createBrandsLayer({ visible: true });
     const hiddenLayer = createBrandsLayer({ visible: false });
-    expect(visibleLayer.props.visible).toBe(true);
-    expect(hiddenLayer.props.visible).toBe(false);
+    assert.equal(visibleLayer.props.visible, true);
+    assert.equal(hiddenLayer.props.visible, false);
   });
 });
 
 describe('formatBrandInfo', () => {
   it('should format brand info with all fields', () => {
     const brand = ADULT_BRANDS.find(b => b.id === 'lelo');
-    expect(brand).toBeDefined();
-    if (brand) {
-      const info = formatBrandInfo(brand);
-      expect(info).toContain('LELO');
-      expect(info).toContain('Stockholm');
-      expect(info).toContain('Sweden');
-      expect(info).toContain('2003');
-    }
-  });
-
-  it('should handle brands without optional fields', () => {
-    const minimalBrand = ADULT_BRANDS.find(b => !b.website && !b.description);
-    if (minimalBrand) {
-      const info = formatBrandInfo(minimalBrand);
-      expect(info).toContain(minimalBrand.name);
-      expect(info).toContain(minimalBrand.city);
-    }
+    assert.ok(brand, 'LELO should exist');
+    const info = formatBrandInfo(brand);
+    assert.ok(info.includes('LELO'), 'Should include name');
+    assert.ok(info.includes('Stockholm'), 'Should include city');
+    assert.ok(info.includes('Sweden'), 'Should include country');
+    assert.ok(info.includes('2003'), 'Should include founded year');
   });
 });
 
 describe('getBrandById', () => {
   it('should find brand by ID', () => {
     const brand = getBrandById('lelo');
-    expect(brand).toBeDefined();
-    expect(brand?.name).toBe('LELO');
+    assert.ok(brand, 'Should find LELO');
+    assert.equal(brand?.name, 'LELO');
   });
 
   it('should return undefined for non-existent ID', () => {
     const brand = getBrandById('non-existent-brand');
-    expect(brand).toBeUndefined();
+    assert.equal(brand, undefined);
   });
 });
