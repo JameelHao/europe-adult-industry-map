@@ -1174,9 +1174,11 @@ const COMMODITY_FEEDS: Record<string, Feed[]> = {
 // Variant-aware exports
 // Import Ireland feeds - use dynamic import to prevent tree-shaking
 import { FEEDS as IRELAND_FEEDS } from './variants/ireland';
+import { FEEDS as ADULT_INDUSTRY_FEEDS } from './variants/adult-industry';
 
-// Force include IRELAND_FEEDS in bundle by referencing it
+// Force include variant feeds in bundle by referencing them
 const _IRELAND_FEEDS = IRELAND_FEEDS;
+const _ADULT_INDUSTRY_FEEDS = ADULT_INDUSTRY_FEEDS;
 
 function getVariantFeeds(): Record<string, Feed[]> {
   switch (SITE_VARIANT) {
@@ -1185,6 +1187,7 @@ function getVariantFeeds(): Record<string, Feed[]> {
     case 'happy': return HAPPY_FEEDS;
     case 'commodity': return COMMODITY_FEEDS;
     case 'ireland': return _IRELAND_FEEDS;
+    case 'adult-industry': return _ADULT_INDUSTRY_FEEDS;
     default: return FULL_FEEDS;
   }
 }

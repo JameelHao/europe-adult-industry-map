@@ -277,6 +277,11 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   processingPlants: false,
   commodityPorts: false,
   webcams: false,
+  adultBrands: false,
+  adultRetailers: false,
+  adultEvents: false,
+  adultFactories: false,
+  adultRegulations: false,
 };
 
 // Mobile defaults for tech variant
@@ -344,6 +349,11 @@ export const MOBILE_DEFAULT_MAP_LAYERS: MapLayers = {
   processingPlants: false,
   commodityPorts: false,
   webcams: false,
+  adultBrands: false,
+  adultRetailers: false,
+  adultEvents: false,
+  adultFactories: false,
+  adultRegulations: false,
 };
 
 export const VARIANT_CONFIG: VariantConfig = {

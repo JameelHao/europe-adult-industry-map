@@ -643,6 +643,12 @@ export interface MapLayers {
   processingPlants: boolean;
   commodityPorts: boolean;
   webcams: boolean;
+  // Adult industry variant layers
+  adultBrands: boolean;
+  adultRetailers: boolean;
+  adultEvents: boolean;
+  adultFactories: boolean;
+  adultRegulations: boolean;
 }
 
 export interface AIDataCenter {

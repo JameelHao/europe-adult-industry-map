@@ -129,6 +129,12 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   processingPlants: false,
   commodityPorts: false,
   webcams: false,
+  // Adult industry layers - enabled by default for this variant
+  adultBrands: true,
+  adultRetailers: true,
+  adultEvents: true,
+  adultFactories: true,
+  adultRegulations: true,
 };
 
 // Mobile map layers (same as desktop for now)
