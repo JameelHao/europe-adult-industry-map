@@ -10,6 +10,7 @@ export * from './data/retailers';
 export * from './data/regulations';
 export * from './data/events';
 export * from './data/factories';
+export * from './data/market-stats';
 
 // Layer exports
 export * from './layers/brands-layer';
