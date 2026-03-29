@@ -6,6 +6,8 @@
 
 // Data exports
 export * from './data/brands';
+export * from './data/retailers';
 
 // Layer exports
 export * from './layers/brands-layer';
+export * from './layers/retailers-layer';
