@@ -31,12 +31,12 @@ export const EUROPE_MIN_ZOOM = 3;
 
 // Adult industry RSS feeds
 export const FEEDS: Record<string, Feed[]> = {
-  // Industry News
+  // Industry News - Core sources for adult industry
   industryNews: [
     { name: 'XBIZ', url: rss('https://www.xbiz.com/rss') },
+    { name: 'XBIZ Europe', url: rss('https://www.xbiz.com/europe/rss') },
     { name: 'EAN Online', url: rss('https://www.ean-online.com/feed/') },
     { name: 'AVN', url: rss('https://avn.com/feed') },
-    { name: 'SIGN Magazine', url: rss('https://signmagazine.net/feed/') },
   ],
 
   // Trade Shows & Events
