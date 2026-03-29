@@ -14,6 +14,7 @@ import { VARIANT_CONFIG as fullConfig } from './variants/full';
 import { VARIANT_CONFIG as financeConfig } from './variants/finance';
 import { VARIANT_CONFIG as happyConfig } from './variants/happy';
 import { VARIANT_CONFIG as commodityConfig } from './variants/commodity';
+import { VARIANT_CONFIG as adultIndustryConfig } from './variants/adult-industry';
 
 /** Map of variant name to config */
 const VARIANT_CONFIGS: Record<string, VariantConfig> = {
@@ -23,6 +24,7 @@ const VARIANT_CONFIGS: Record<string, VariantConfig> = {
   finance: financeConfig,
   happy: happyConfig,
   commodity: commodityConfig,
+  'adult-industry': adultIndustryConfig,
 };
 
 /** Default brand configuration */
