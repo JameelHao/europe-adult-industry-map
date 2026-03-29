@@ -144,6 +144,11 @@ const layers = {
   processingPlants: false,
   commodityPorts: false,
   webcams: false,
+  adultBrands: false,
+  adultRetailers: false,
+  adultEvents: false,
+  adultFactories: false,
+  adultRegulations: false,
 };
 
 await initI18n();

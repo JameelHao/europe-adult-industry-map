@@ -313,6 +313,11 @@ const IRELAND_MAP_LAYERS: MapLayers = {
   processingPlants: false,
   commodityPorts: false,
   webcams: false,
+  adultBrands: false,
+  adultRetailers: false,
+  adultEvents: false,
+  adultFactories: false,
+  adultRegulations: false,
 };
 
 // Ireland variant config

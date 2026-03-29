@@ -3,7 +3,7 @@ import type { MapLayers } from '@/types';
 import { isDesktopRuntime } from '@/services/runtime';
 
 export type MapRenderer = 'flat' | 'globe';
-export type MapVariant = 'full' | 'tech' | 'finance' | 'happy' | 'commodity' | 'ireland';
+export type MapVariant = 'full' | 'tech' | 'finance' | 'happy' | 'commodity' | 'ireland' | 'adult-industry';
 
 const _desktop = isDesktopRuntime();
 
@@ -86,6 +86,12 @@ export const LAYER_REGISTRY: Record<keyof MapLayers, LayerDefinition> = {
   processingPlants:         def('processingPlants',         '&#127981;', 'processingPlants',         'Processing Plants'),
   commodityPorts:           def('commodityPorts',           '&#9973;',   'commodityPorts',           'Commodity Ports'),
   webcams:                  def('webcams',                  '&#128247;', 'webcams',                  'Live Webcams'),
+  // Adult industry variant layers
+  adultBrands:              def('adultBrands',              '&#127991;', 'adultBrands',              'Brands'),
+  adultRetailers:           def('adultRetailers',           '&#128717;', 'adultRetailers',           'Retailers'),
+  adultEvents:              def('adultEvents',              '&#128197;', 'adultEvents',              'Events'),
+  adultFactories:           def('adultFactories',           '&#127981;', 'adultFactories',           'Factories'),
+  adultRegulations:         def('adultRegulations',         '&#128220;', 'adultRegulations',         'Regulations'),
 };
 
 const VARIANT_LAYER_ORDER: Record<MapVariant, Array<keyof MapLayers>> = {
@@ -124,6 +130,9 @@ const VARIANT_LAYER_ORDER: Record<MapVariant, Array<keyof MapLayers>> = {
     'semiconductorHubs', 'irelandDataCenters', 'irelandTechHQs', 'irishUnicorns',
     'irelandAICompanies', 'irelandUniversities', 'submarineCables',
     'startupHubs', 'accelerators', 'techEvents',
+  ],
+  'adult-industry': [
+    'adultBrands', 'adultRetailers', 'adultEvents', 'adultFactories', 'adultRegulations',
   ],
 };
 

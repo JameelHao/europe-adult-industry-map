@@ -234,6 +234,10 @@ export class DataLoaderManager implements AppModule {
   }
 
   init(): void {
+    // Adult industry variant does not need market watchlist
+    if (isAdultIndustryVariant()) {
+      return;
+    }
     this.boundMarketWatchlistHandler = () => {
       void this.loadMarkets().then(async () => {
         if (SITE_VARIANT === 'finance' && getSecretState('WORLDMONITOR_API_KEY').present) {
