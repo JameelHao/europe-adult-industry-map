@@ -13,6 +13,7 @@ export {
   getMapConfig,
   getFeatures,
   isIrelandVariant,
+  isAdultIndustryVariant,
   getMinZoom,
   getMapBounds,
 } from './variant-config';

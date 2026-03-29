@@ -14,6 +14,7 @@ import {
   DEFAULT_PANELS,
   SITE_VARIANT,
   getFeatures,
+  isAdultIndustryVariant,
 } from '@/config';
 import { getPanelLoadDelay, getRetryDelayWithJitter } from '@/constants/panelPriority';
 import { INTEL_HOTSPOTS, CONFLICT_ZONES } from '@/config/geo';
@@ -361,9 +362,18 @@ export class DataLoaderManager implements AppModule {
     const shouldLoad = (id: string): boolean => forceAll || this.isPanelNearViewport(id);
     const shouldLoadAny = (ids: string[]): boolean => forceAll || this.isAnyPanelNearViewport(ids);
 
-    const tasks: Array<{ name: string; task: Promise<void> }> = [
-      { name: 'news', task: runGuarded('news', () => this.loadNews()) },
-    ];
+    const tasks: Array<{ name: string; task: Promise<void> }> = [];
+
+    // Adult industry variant only loads local data and RSS feeds
+    // Skip all authenticated API calls to avoid 401 errors
+    if (isAdultIndustryVariant()) {
+      tasks.push({ name: 'news', task: runGuarded('news', () => this.loadNews()) });
+      // Adult industry variant only uses RSS feeds for news, skip everything else
+      await Promise.allSettled(tasks.map(t => t.task));
+      return;
+    }
+
+    tasks.push({ name: 'news', task: runGuarded('news', () => this.loadNews()) });
 
     // Happy variant only loads news data -- skip all geopolitical/financial/military data
     if (SITE_VARIANT !== 'happy') {
