@@ -137,6 +137,7 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   adultRegulations: true,
   adultCities: true,
   adultRedLightDistricts: true,
+  adultFKKClubs: true,
 };
 
 // Mobile map layers (same as desktop for now)
