@@ -27,10 +27,12 @@ import {
   createRetailersLayer,
   createEventsLayer,
   createFactoriesLayer,
+  createCitiesLayer,
   formatBrandInfo,
   formatRetailerInfo,
   formatEventInfo,
   formatFactoryInfo,
+  formatCityPopup,
 } from '@/config/variants/adult-industry/index';
 // FR #207: Modular layer imports
 import {
@@ -1641,6 +1643,10 @@ export class DeckGLMap {
         }),
         createFactoriesLayer({
           onClick: (info) => this.handleAdultIndustryClick(info, 'factory'),
+        }),
+        createCitiesLayer({
+          visible: mapLayers.adultCities,
+          onClick: (info) => this.handleAdultIndustryClick(info, 'city'),
         }),
       );
       // Regulations layer requires GeoJSON data (skip for now, needs separate implementation)
@@ -4240,7 +4246,7 @@ export class DeckGLMap {
    */
   private handleAdultIndustryClick(
     info: PickingInfo,
-    type: 'brand' | 'retailer' | 'event' | 'factory'
+    type: 'brand' | 'retailer' | 'event' | 'factory' | 'city'
   ): void {
     if (!info.object) return;
 
@@ -4261,6 +4267,9 @@ export class DeckGLMap {
         break;
       case 'factory':
         content = formatFactoryInfo(info.object);
+        break;
+      case 'city':
+        content = formatCityPopup(info.object);
         break;
     }
 

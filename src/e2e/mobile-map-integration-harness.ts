@@ -149,6 +149,7 @@ const layers = {
   adultEvents: false,
   adultFactories: false,
   adultRegulations: false,
+  adultCities: false,
 };
 
 await initI18n();
