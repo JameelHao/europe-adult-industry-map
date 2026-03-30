@@ -574,7 +574,10 @@ export class App {
     }
 
     // Hydrate in-memory cache from bootstrap endpoint (before panels construct and fetch)
-    await fetchBootstrapData();
+    // Skip for adult-industry variant (no World Monitor API access)
+    if (!isAdultIndustryVariant()) {
+      await fetchBootstrapData();
+    }
 
     const geoCoordsPromise: Promise<PreciseCoordinates | null> =
       this.state.isMobile && this.state.initialUrlState?.lat === undefined && this.state.initialUrlState?.lon === undefined

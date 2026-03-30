@@ -1,4 +1,5 @@
 import { isDesktopRuntime, toApiUrl } from '@/services/runtime';
+import { shouldCallApi } from '@/utils/api-guard';
 
 const hydrationCache = new Map<string, unknown>();
 
@@ -17,8 +18,13 @@ function populateCache(data: Record<string, unknown>): void {
 }
 
 async function fetchTier(tier: string, signal: AbortSignal): Promise<void> {
+  const url = toApiUrl(`/api/bootstrap?tier=${tier}`);
+  // Skip bootstrap for adult-industry variant (requires World Monitor auth)
+  if (!shouldCallApi(url)) {
+    return;
+  }
   try {
-    const resp = await fetch(toApiUrl(`/api/bootstrap?tier=${tier}`), { signal });
+    const resp = await fetch(url, { signal });
     if (!resp.ok) return;
     const { data } = (await resp.json()) as { data: Record<string, unknown> };
     populateCache(data);

@@ -36,6 +36,7 @@ import { isHeadlineMemoryEnabled } from '@/services/ai-flow-settings';
 import { t, getCurrentLanguage } from '@/services/i18n';
 import { trackCountrySelected, trackCountryBriefOpened } from '@/services/analytics';
 import { toApiUrl } from '@/services/runtime';
+import { shouldCallApi } from '@/utils/api-guard';
 import type { StrategicPosturePanel } from '@/components/StrategicPosturePanel';
 import type { NewsItem } from '@/types';
 import { getNearbyInfrastructure } from '@/services/related-assets';
@@ -394,6 +395,12 @@ export class CountryIntelManager implements AppModule {
   }
 
   private async fetchCountryIntelBrief(code: string, contextSnapshot: string): Promise<string> {
+    const url = toApiUrl(`/api/intelligence/v1/get-country-intel-brief`);
+    // Skip for adult-industry variant (requires World Monitor auth)
+    if (!shouldCallApi(url)) {
+      return '';
+    }
+
     const lang = getCurrentLanguage();
     const params = new URLSearchParams({ country_code: code, lang });
     const trimmed = contextSnapshot.trim();

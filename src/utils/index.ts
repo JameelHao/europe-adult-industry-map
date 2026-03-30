@@ -193,3 +193,5 @@ export type { Theme, ThemePreference } from './theme-manager';
 export { toFlagEmoji } from './country-flag';
 
 import { getCurrentLanguage } from '../services/i18n';
+
+export { shouldCallApi, shouldInitRpc, shouldConnectWebSocket } from './api-guard';
