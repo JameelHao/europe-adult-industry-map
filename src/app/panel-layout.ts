@@ -796,7 +796,8 @@ export class PanelLayoutManager implements AppModule {
       this.ctx.panels['gulf-economies'] = new GulfEconomiesPanel();
     }
 
-    if (this.shouldCreatePanel('live-news')) {
+    // Skip live-news (Bloomberg video player) for adult-industry variant
+    if (this.shouldCreatePanel('live-news') && !isAdultIndustryVariant()) {
       this.ctx.panels['live-news'] = new LiveNewsPanel();
     }
 
