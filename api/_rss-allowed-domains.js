@@ -305,5 +305,9 @@ export default [
   "eu-startups.com",
   "www.eu-startups.com",
   "tech.eu",
-  "sifted.eu"
+  "sifted.eu",
+  // Adult industry variant feeds
+  "eurosexscene.com",
+  "www.xbiz.com",
+  "ean-online.com"
 ];
