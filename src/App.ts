@@ -621,7 +621,10 @@ export class App {
     // Initialize Company Profile route handler (FR #147)
     getCompanyProfile();
 
-    showProBanner(this.state.container);
+    // Skip PRO banner for adult-industry variant
+    if (!isAdultIndustryVariant()) {
+      showProBanner(this.state.container);
+    }
 
     const mobileGeoCoords = await geoCoordsPromise;
     if (mobileGeoCoords && this.state.map) {
