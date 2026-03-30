@@ -58,6 +58,7 @@ import {
   SITE_VARIANT,
   getBrand,
   getMapConfig,
+  isAdultIndustryVariant,
 } from '@/config';
 import { BETA_MODE } from '@/config/beta';
 import { t } from '@/services/i18n';
@@ -321,7 +322,7 @@ export class PanelLayoutManager implements AppModule {
         </div>
         <div class="mobile-menu-version">v${__APP_VERSION__}</div>
       </nav>
-      ${SITE_VARIANT !== 'ireland' ? '<div class="market-ticker-container" id="marketTickerContainer"></div>' : ''}
+      ${SITE_VARIANT !== 'ireland' && !isAdultIndustryVariant() ? '<div class="market-ticker-container" id="marketTickerContainer"></div>' : ''}
       <div class="daily-brief-container" id="dailyBriefContainer"></div>
       <div class="alert-panel-container" id="alertPanelContainer"></div>
       ${showRegionSelector ? this.renderRegionSheet() : ''}
