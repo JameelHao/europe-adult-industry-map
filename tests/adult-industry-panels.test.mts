@@ -100,3 +100,38 @@ describe('adult-industry variant panel configuration', () => {
     assert.ok(adultIndustrySrc.includes('mobileMapLayers:'), 'VARIANT_CONFIG should include mobileMapLayers');
   });
 });
+
+describe('adult-industry variant market ticker', () => {
+  const appSrc = readFileSync(resolve(__dirname, '../src/App.ts'), 'utf-8');
+  const panelLayoutSrc = readFileSync(resolve(__dirname, '../src/app/panel-layout.ts'), 'utf-8');
+
+  it('App.ts skips market ticker for adult-industry variant', () => {
+    // Should check isAdultIndustryVariant() before creating ticker
+    assert.ok(
+      appSrc.includes('!isAdultIndustryVariant()'),
+      'App.ts should check isAdultIndustryVariant() before creating market ticker'
+    );
+  });
+
+  it('panel-layout.ts hides market ticker container for adult-industry variant', () => {
+    // Should not render market ticker container for adult-industry
+    assert.ok(
+      panelLayoutSrc.includes('!isAdultIndustryVariant()'),
+      'panel-layout.ts should check isAdultIndustryVariant() for market ticker container'
+    );
+  });
+
+  it('isAdultIndustryVariant is imported in App.ts', () => {
+    assert.ok(
+      appSrc.includes('isAdultIndustryVariant'),
+      'App.ts should import isAdultIndustryVariant'
+    );
+  });
+
+  it('isAdultIndustryVariant is imported in panel-layout.ts', () => {
+    assert.ok(
+      panelLayoutSrc.includes('isAdultIndustryVariant'),
+      'panel-layout.ts should import isAdultIndustryVariant'
+    );
+  });
+});

@@ -7,6 +7,7 @@ import {
   MOBILE_DEFAULT_MAP_LAYERS,
   STORAGE_KEYS,
   SITE_VARIANT,
+  isAdultIndustryVariant,
 } from '@/config';
 import { initBriefButtonStatus } from '@/hooks/useBriefStatus';
 import { initAlertButtonStatus } from '@/hooks/useAlertStatus';
@@ -586,7 +587,8 @@ export class App {
     // Phase 1: Layout (creates map + panels — they'll find hydrated data)
     this.panelLayout.init();
     // Market ticker disabled for ireland variant (IrishTech Daily focuses on local tech news)
-    if (SITE_VARIANT !== 'ireland') {
+    // and adult-industry variant (crypto/stock data not relevant)
+    if (SITE_VARIANT !== 'ireland' && !isAdultIndustryVariant()) {
       const tickerContainer = document.getElementById('marketTickerContainer');
       if (tickerContainer) {
         this.marketTicker = new MarketTicker(tickerContainer, { symbols: ['BTC', 'ETH', 'NDX'] });
