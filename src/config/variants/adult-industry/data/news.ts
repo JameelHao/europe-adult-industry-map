@@ -38,6 +38,11 @@ export interface NewsItem {
  */
 export const RSS_FEEDS: RssFeedConfig[] = [
   {
+    name: 'Euro Sex Scene',
+    url: '/api/rss-proxy?url=https://eurosexscene.com/feed/',
+    icon: '🇪🇺',
+  },
+  {
     name: 'XBIZ',
     url: '/api/rss-proxy?url=https://www.xbiz.com/rss',
     icon: '📰',
