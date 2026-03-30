@@ -650,6 +650,7 @@ export interface MapLayers {
   adultFactories: boolean;
   adultRegulations: boolean;
   adultCities: boolean;
+  adultRedLightDistricts: boolean;
 }
 
 export interface AIDataCenter {

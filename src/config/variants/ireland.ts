@@ -319,6 +319,7 @@ const IRELAND_MAP_LAYERS: MapLayers = {
   adultFactories: false,
   adultRegulations: false,
   adultCities: false,
+  adultRedLightDistricts: false,
 };
 
 // Ireland variant config

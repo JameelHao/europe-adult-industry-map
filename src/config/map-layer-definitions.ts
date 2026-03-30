@@ -93,6 +93,7 @@ export const LAYER_REGISTRY: Record<keyof MapLayers, LayerDefinition> = {
   adultFactories:           def('adultFactories',           '&#127981;', 'adultFactories',           'Factories'),
   adultRegulations:         def('adultRegulations',         '&#128220;', 'adultRegulations',         'Regulations'),
   adultCities:              def('adultCities',              '&#127961;', 'adultCities',              'Cities'),
+  adultRedLightDistricts:   def('adultRedLightDistricts',   '&#128308;', 'adultRedLightDistricts',   'Red Light Districts'),
 };
 
 const VARIANT_LAYER_ORDER: Record<MapVariant, Array<keyof MapLayers>> = {
@@ -133,7 +134,7 @@ const VARIANT_LAYER_ORDER: Record<MapVariant, Array<keyof MapLayers>> = {
     'startupHubs', 'accelerators', 'techEvents',
   ],
   'adult-industry': [
-    'adultBrands', 'adultRetailers', 'adultEvents', 'adultFactories', 'adultRegulations', 'adultCities',
+    'adultBrands', 'adultRetailers', 'adultEvents', 'adultFactories', 'adultRegulations', 'adultCities', 'adultRedLightDistricts',
   ],
 };
 
