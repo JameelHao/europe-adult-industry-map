@@ -1,7 +1,7 @@
 /**
  * Adult Industry Regulations Panel
  *
- * Displays country regulations from static data.
+ * Displays country regulations from static data with service legality matrix.
  * Used by adult-industry variant.
  */
 import { Panel } from './Panel';
@@ -11,8 +11,11 @@ import {
   getRegulationsByScore,
   REGULATION_COLORS,
   REGULATION_SCORE_LABELS,
+  SERVICE_LEGALITY_ICONS,
+  SERVICE_TYPE_LABELS,
   type CountryRegulation,
   type RegulationScore,
+  type ServiceLegalityInfo,
 } from '@/config/variants/adult-industry/data/regulations';
 
 type ViewMode = 'all' | 'strict' | 'moderate' | 'liberal';
@@ -68,8 +71,8 @@ export class AdultIndustryRegulationsPanel extends Panel {
         filtered = this.regulations;
     }
 
-    // Sort by score (strictest first)
-    filtered = [...filtered].sort((a, b) => a.overallScore - b.overallScore);
+    // Sort by score (permissive first for better UX)
+    filtered = [...filtered].sort((a, b) => b.overallScore - a.overallScore);
 
     // Regulations list
     const list = h('div', { className: 'regulations-list' });
@@ -81,11 +84,11 @@ export class AdultIndustryRegulationsPanel extends Panel {
     // Legend
     const legend = h('div', { className: 'regulations-legend' });
     legend.innerHTML = `
-      <div class="legend-title">Score Guide:</div>
+      <div class="legend-title">Score: 1 (Strict) → 5 (Liberal)</div>
       <div class="legend-items">
-        <span class="legend-item"><span style="color: ${REGULATION_COLORS[1]}">●</span> 1-2: Strict</span>
-        <span class="legend-item"><span style="color: ${REGULATION_COLORS[3]}">●</span> 3: Moderate</span>
-        <span class="legend-item"><span style="color: ${REGULATION_COLORS[5]}">●</span> 4-5: Liberal</span>
+        <span class="legend-item">✅ Legal</span>
+        <span class="legend-item">⚠️ Tolerated</span>
+        <span class="legend-item">❌ Illegal</span>
       </div>
     `;
     container.appendChild(legend);
@@ -98,12 +101,13 @@ export class AdultIndustryRegulationsPanel extends Panel {
     const color = REGULATION_COLORS[score];
     const label = REGULATION_SCORE_LABELS[score];
 
-    // Build summary from regulation fields
-    const summaryParts: string[] = [];
-    if (reg.physicalRetailLegal) summaryParts.push('Retail ✓');
-    if (reg.onlineSalesLegal) summaryParts.push('Online ✓');
-    if (reg.ageVerificationRequired) summaryParts.push(`Age verify: ${reg.ageVerificationMethod}`);
-    const summary = summaryParts.join(' • ') || 'See details';
+    // Build service matrix
+    const serviceMatrix = this.buildServiceMatrix(reg.services);
+
+    // Special badges
+    const badges: string[] = [];
+    if (reg.hasRedLightDistricts) badges.push('🔴 Red Light District');
+    if (reg.hasFKKClubs) badges.push('🧖 FKK Clubs');
 
     const card = h('div', { className: 'regulation-card' });
     card.innerHTML = `
@@ -112,10 +116,42 @@ export class AdultIndustryRegulationsPanel extends Panel {
         <span class="regulation-score" style="background: ${color}">${score}/5</span>
       </div>
       <div class="regulation-label" style="color: ${color}">${label}</div>
-      <div class="regulation-summary">${summary}</div>
-      ${reg.notes ? `<div class="regulation-notes">${reg.notes}</div>` : ''}
+      ${badges.length > 0 ? `<div class="regulation-badges">${badges.join(' • ')}</div>` : ''}
+      <div class="regulation-services">${serviceMatrix}</div>
+      <div class="regulation-summary">${reg.summary}</div>
+      ${reg.warnings && reg.warnings.length > 0 ? `
+        <div class="regulation-warnings">
+          ${reg.warnings.map(w => `⚠️ ${w}`).join('<br>')}
+        </div>
+      ` : ''}
+      <div class="regulation-source">
+        <a href="${reg.sourceUrl}" target="_blank" rel="noopener">📖 Source</a>
+      </div>
     `;
+
     return card;
+  }
+
+  private buildServiceMatrix(services: ServiceLegalityInfo): string {
+    const serviceKeys: (keyof ServiceLegalityInfo)[] = [
+      'brothels', 'escorts', 'stripClubs', 'swingerClubs', 'streetProstitution', 'eroticMassage'
+    ];
+
+    const items = serviceKeys.map(key => {
+      const status = services[key];
+      const icon = SERVICE_LEGALITY_ICONS[status];
+      const shortLabel = SERVICE_TYPE_LABELS[key];
+      return `<span class="service-item" title="${shortLabel}: ${status}">${icon}</span>`;
+    });
+
+    return `
+      <div class="service-matrix">
+        <div class="service-labels">
+          ${serviceKeys.map(k => `<span class="svc-label">${SERVICE_TYPE_LABELS[k]}</span>`).join('')}
+        </div>
+        <div class="service-icons">${items.join('')}</div>
+      </div>
+    `;
   }
 
   async refresh(): Promise<void> {
