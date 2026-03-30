@@ -200,6 +200,7 @@ const allLayersEnabled: MapLayers = {
   adultEvents: false,
   adultFactories: false,
   adultRegulations: false,
+  adultCities: false,
 };
 
 const allLayersDisabled: MapLayers = {
@@ -267,6 +268,7 @@ const allLayersDisabled: MapLayers = {
   adultEvents: false,
   adultFactories: false,
   adultRegulations: false,
+  adultCities: false,
 };
 
 const SEEDED_NEWS_LOCATIONS: Array<{

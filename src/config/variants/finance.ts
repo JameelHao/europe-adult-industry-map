@@ -241,6 +241,7 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   adultEvents: false,
   adultFactories: false,
   adultRegulations: false,
+  adultCities: false,
 };
 
 // Mobile defaults for finance variant
@@ -313,6 +314,7 @@ export const MOBILE_DEFAULT_MAP_LAYERS: MapLayers = {
   adultEvents: false,
   adultFactories: false,
   adultRegulations: false,
+  adultCities: false,
 };
 
 export const VARIANT_CONFIG: VariantConfig = {

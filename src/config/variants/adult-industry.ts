@@ -135,6 +135,7 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   adultEvents: true,
   adultFactories: true,
   adultRegulations: true,
+  adultCities: true,
 };
 
 // Mobile map layers (same as desktop for now)
