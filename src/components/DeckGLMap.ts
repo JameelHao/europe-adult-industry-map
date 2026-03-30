@@ -35,7 +35,11 @@ import {
   formatFactoryInfo,
   formatCityPopup,
   formatRedLightDistrictPopup,
+  CITIES,
+  type City,
+  type CityService,
 } from '@/config/variants/adult-industry/index';
+import { filterCitiesByServices } from '@/components/AdultIndustryFiltersPanel';
 // FR #207: Modular layer imports
 import {
   createSubmarineCablesLayer,
@@ -376,6 +380,9 @@ export class DeckGLMap {
   private flightDelays: AirportDelayAlert[] = [];
   private aircraftPositions: PositionSample[] = [];
   private aircraftFetchTimer: ReturnType<typeof setInterval> | null = null;
+  // Adult industry city filters
+  private cityServiceFilters: CityService[] = [];
+  private filteredCities: City[] = CITIES;
   private news: NewsItem[] = [];
   private newsLocations: Array<{ lat: number; lon: number; title: string; threatLevel: string; timestamp?: Date }> = [];
   private newsLocationFirstSeen = new Map<string, number>();
@@ -1648,6 +1655,7 @@ export class DeckGLMap {
         }),
         createCitiesLayer({
           visible: mapLayers.adultCities,
+          data: this.filteredCities,
           onClick: (info) => this.handleAdultIndustryClick(info, 'city'),
         }),
         createRedLightDistrictsLayer({
@@ -4878,6 +4886,22 @@ export class DeckGLMap {
       this.renderPending = false;
       this.render();
     }
+  }
+
+  /**
+   * Set city service filters and update layers
+   */
+  public setCityServiceFilters(filters: CityService[]): void {
+    this.cityServiceFilters = filters;
+    this.filteredCities = filterCitiesByServices(CITIES, filters);
+    this.updateLayers();
+  }
+
+  /**
+   * Get current city service filters
+   */
+  public getCityServiceFilters(): CityService[] {
+    return this.cityServiceFilters;
   }
 
   private updateLayers(): void {
