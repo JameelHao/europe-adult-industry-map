@@ -136,6 +136,7 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   adultFactories: true,
   adultRegulations: true,
   adultCities: true,
+  adultRedLightDistricts: true,
 };
 
 // Mobile map layers (same as desktop for now)

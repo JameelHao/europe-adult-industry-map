@@ -12,6 +12,7 @@ export * from './data/events';
 export * from './data/factories';
 export * from './data/market-stats';
 export * from './data/cities';
+export * from './data/red-light-districts';
 
 // Layer exports
 export * from './layers/brands-layer';
@@ -20,3 +21,4 @@ export * from './layers/regulations-layer';
 export * from './layers/events-layer';
 export * from './layers/factories-layer';
 export * from './layers/cities-layer';
+export * from './layers/red-light-districts-layer';

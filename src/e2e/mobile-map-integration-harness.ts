@@ -150,6 +150,7 @@ const layers = {
   adultFactories: false,
   adultRegulations: false,
   adultCities: false,
+  adultRedLightDistricts: false,
 };
 
 await initI18n();
