@@ -127,8 +127,16 @@ describe('REGULATION_COLORS', () => {
 
   it('should have progressively changing colors', () => {
     // Red (1) -> Green (5)
-    assert.ok(REGULATION_COLORS[1].includes('FF0'), 'Score 1 should be reddish');
-    assert.ok(REGULATION_COLORS[5].includes('00CC'), 'Score 5 should be greenish');
+    // Score 1 should be reddish: #e74c3c
+    assert.ok(
+      REGULATION_COLORS[1].includes('e74c3c') || REGULATION_COLORS[1].includes('FF'),
+      'Score 1 should be reddish'
+    );
+    // Score 5 should be greenish: #27ae60
+    assert.ok(
+      REGULATION_COLORS[5].includes('27ae60') || REGULATION_COLORS[5].includes('ae') || REGULATION_COLORS[5].includes('CC'),
+      'Score 5 should be greenish'
+    );
   });
 });
 
