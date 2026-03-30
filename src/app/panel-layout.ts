@@ -26,6 +26,9 @@ import {
   StrategicRiskPanel,
   StrategicPosturePanel,
   TechEventsPanel,
+  AdultIndustryEventsPanel,
+  AdultIndustryMarketPanel,
+  AdultIndustryRegulationsPanel,
   ServiceStatusPanel,
   RuntimeConfigPanel,
   InsightsPanel,
@@ -805,7 +808,15 @@ export class PanelLayoutManager implements AppModule {
       this.ctx.panels['windy-webcams'] = new PinnedWebcamsPanel();
     }
 
-    this.createPanel('events', () => new TechEventsPanel('events', () => this.ctx.allNews));
+    // Events panel: use adult-industry specific panel for that variant
+    if (isAdultIndustryVariant()) {
+      this.createPanel('events', () => new AdultIndustryEventsPanel('events'));
+      // Adult industry specific panels
+      this.createPanel('market', () => new AdultIndustryMarketPanel('market'));
+      this.createPanel('regulations', () => new AdultIndustryRegulationsPanel('regulations'));
+    } else {
+      this.createPanel('events', () => new TechEventsPanel('events', () => this.ctx.allNews));
+    }
     this.createPanel('service-status', () => new ServiceStatusPanel());
 
     this.lazyPanel('tech-readiness', () =>
