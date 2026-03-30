@@ -4781,6 +4781,17 @@ export class DeckGLMap {
             { shape: shapes.circle('rgb(255, 200, 50)'), label: 'Renewable Installation' },
             { shape: shapes.circle('rgb(160, 100, 255)'), label: t('components.deckgl.legend.aircraft') },
           ]
+          : isAdultIndustryVariant()
+            ? [
+              // Adult Industry variant legend
+              { shape: shapes.circle('rgb(255, 107, 107)'), label: '🏷️ Brands' },           // #FF6B6B
+              { shape: shapes.circle('rgb(78, 205, 196)'), label: '🛒 Retailers' },         // #4ECDC4
+              { shape: shapes.circle('rgb(69, 183, 209)'), label: '📅 Events' },            // #45B7D1
+              { shape: shapes.square('rgb(150, 206, 180)'), label: '🏭 Factories' },        // #96CEB4
+              { shape: shapes.hexagon('rgb(46, 204, 113)'), label: '🟢 Liberal (4-5)' },    // Green - permissive
+              { shape: shapes.hexagon('rgb(241, 196, 15)'), label: '🟡 Moderate (3)' },     // Yellow - moderate
+              { shape: shapes.hexagon('rgb(231, 76, 60)'), label: '🔴 Strict (1-2)' },      // Red - strict
+            ]
           : [
             { shape: shapes.circle('rgb(255, 68, 68)'), label: t('components.deckgl.legend.highAlert') },
             { shape: shapes.circle('rgb(255, 165, 0)'), label: t('components.deckgl.legend.elevated') },
