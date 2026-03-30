@@ -55,14 +55,15 @@ function getCityRadius(city: City): number {
 export function createCitiesLayer(options?: {
   visible?: boolean;
   opacity?: number;
+  data?: City[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick?: (info: any) => void;
 }): ScatterplotLayer<City> {
-  const { visible = true, opacity = 0.8, onClick } = options || {};
+  const { visible = true, opacity = 0.8, data, onClick } = options || {};
 
   return new ScatterplotLayer<City>({
     id: 'adult-cities-layer',
-    data: getCities(),
+    data: data ?? getCities(),
     pickable: true,
     opacity,
     visible,
