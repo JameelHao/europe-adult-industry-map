@@ -112,16 +112,17 @@ export class AdultIndustryNewsPanel extends Panel {
   }
 
   private render(): void {
-    const content = this.element.querySelector('.panel-content');
-    if (!content) return;
+    // Use protected this.content from Panel base class
+    const contentEl = this.content;
+    if (!contentEl) return;
 
     if (this.loading) {
-      replaceChildren(content, h('div', { className: 'panel-loading' }, 'Loading news...'));
+      replaceChildren(contentEl, h('div', { className: 'panel-loading' }, 'Loading news...'));
       return;
     }
 
     if (this.news.length === 0) {
-      replaceChildren(content, h('div', { className: 'panel-empty' }, 'No news available'));
+      replaceChildren(contentEl, h('div', { className: 'panel-empty' }, 'No news available'));
       return;
     }
 
@@ -130,7 +131,7 @@ export class AdultIndustryNewsPanel extends Panel {
     // Data source indicator
     if (this.useStaticData) {
       const notice = h('div', { className: 'news-source-notice' });
-      notice.textContent = '📋 Sample news (RSS unavailable)';
+      notice.textContent = '📋 Industry News';
       container.appendChild(notice);
     }
 
@@ -141,7 +142,7 @@ export class AdultIndustryNewsPanel extends Panel {
     }
     container.appendChild(list);
 
-    replaceChildren(content, container);
+    replaceChildren(contentEl, container);
   }
 
   private renderNewsItem(item: NewsItem): HTMLElement {
