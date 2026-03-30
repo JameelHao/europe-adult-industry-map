@@ -32,6 +32,7 @@ export * from './TechEventsPanel';
 export * from './AdultIndustryEventsPanel';
 export * from './AdultIndustryMarketPanel';
 export * from './AdultIndustryRegulationsPanel';
+export * from './AdultIndustryNewsPanel';
 export * from './ServiceStatusPanel';
 export * from './RuntimeConfigPanel';
 export * from './InsightsPanel';

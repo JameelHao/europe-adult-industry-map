@@ -29,6 +29,7 @@ import {
   AdultIndustryEventsPanel,
   AdultIndustryMarketPanel,
   AdultIndustryRegulationsPanel,
+  AdultIndustryNewsPanel,
   ServiceStatusPanel,
   RuntimeConfigPanel,
   InsightsPanel,
@@ -815,6 +816,7 @@ export class PanelLayoutManager implements AppModule {
       // Adult industry specific panels
       this.createPanel('market', () => new AdultIndustryMarketPanel('market'));
       this.createPanel('regulations', () => new AdultIndustryRegulationsPanel('regulations'));
+      this.createPanel('industry-news', () => new AdultIndustryNewsPanel('industry-news'));
     } else {
       this.createPanel('events', () => new TechEventsPanel('events', () => this.ctx.allNews));
     }
