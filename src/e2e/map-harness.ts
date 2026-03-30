@@ -202,6 +202,7 @@ const allLayersEnabled: MapLayers = {
   adultRegulations: false,
   adultCities: false,
   adultRedLightDistricts: false,
+  adultFKKClubs: false,
 };
 
 const allLayersDisabled: MapLayers = {
@@ -271,6 +272,7 @@ const allLayersDisabled: MapLayers = {
   adultRegulations: false,
   adultCities: false,
   adultRedLightDistricts: false,
+  adultFKKClubs: false,
 };
 
 const SEEDED_NEWS_LOCATIONS: Array<{

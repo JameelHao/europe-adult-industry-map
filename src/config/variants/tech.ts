@@ -284,6 +284,7 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   adultRegulations: false,
   adultCities: false,
   adultRedLightDistricts: false,
+  adultFKKClubs: false,
 };
 
 // Mobile defaults for tech variant
@@ -358,6 +359,7 @@ export const MOBILE_DEFAULT_MAP_LAYERS: MapLayers = {
   adultRegulations: false,
   adultCities: false,
   adultRedLightDistricts: false,
+  adultFKKClubs: false,
 };
 
 export const VARIANT_CONFIG: VariantConfig = {

@@ -29,12 +29,14 @@ import {
   createFactoriesLayer,
   createCitiesLayer,
   createRedLightDistrictsLayer,
+  createFKKClubsLayer,
   formatBrandInfo,
   formatRetailerInfo,
   formatEventInfo,
   formatFactoryInfo,
   formatCityPopup,
   formatRedLightDistrictPopup,
+  formatFKKClubPopup,
   CITIES,
   type City,
   type CityService,
@@ -1660,6 +1662,9 @@ export class DeckGLMap {
         }),
         createRedLightDistrictsLayer({
           onClick: (info) => this.handleAdultIndustryClick(info, 'redLightDistrict'),
+        }),
+        createFKKClubsLayer({
+          onClick: (info) => this.handleAdultIndustryClick(info, 'fkkClub'),
         }),
       );
       // Regulations layer requires GeoJSON data (skip for now, needs separate implementation)
@@ -4259,7 +4264,7 @@ export class DeckGLMap {
    */
   private handleAdultIndustryClick(
     info: PickingInfo,
-    type: 'brand' | 'retailer' | 'event' | 'factory' | 'city' | 'redLightDistrict'
+    type: 'brand' | 'retailer' | 'event' | 'factory' | 'city' | 'redLightDistrict' | 'fkkClub'
   ): void {
     if (!info.object) return;
 
@@ -4286,6 +4291,9 @@ export class DeckGLMap {
         break;
       case 'redLightDistrict':
         content = formatRedLightDistrictPopup(info.object);
+        break;
+      case 'fkkClub':
+        content = formatFKKClubPopup(info.object);
         break;
     }
 

@@ -651,6 +651,7 @@ export interface MapLayers {
   adultRegulations: boolean;
   adultCities: boolean;
   adultRedLightDistricts: boolean;
+  adultFKKClubs: boolean;
 }
 
 export interface AIDataCenter {

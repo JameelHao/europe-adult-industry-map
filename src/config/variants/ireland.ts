@@ -320,6 +320,7 @@ const IRELAND_MAP_LAYERS: MapLayers = {
   adultRegulations: false,
   adultCities: false,
   adultRedLightDistricts: false,
+  adultFKKClubs: false,
 };
 
 // Ireland variant config

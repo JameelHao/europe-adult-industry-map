@@ -151,6 +151,7 @@ const layers = {
   adultRegulations: false,
   adultCities: false,
   adultRedLightDistricts: false,
+  adultFKKClubs: false,
 };
 
 await initI18n();
