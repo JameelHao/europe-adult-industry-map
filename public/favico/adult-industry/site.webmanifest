@@ -1,0 +1,19 @@
+{
+  "name": "Europe Adult Industry Map",
+  "short_name": "EU Industry Map",
+  "icons": [
+    {
+      "src": "/favico/adult-industry/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favico/adult-industry/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#8a2be2",
+  "background_color": "#1a1a2e",
+  "display": "standalone"
+}
