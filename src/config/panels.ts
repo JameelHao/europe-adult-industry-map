@@ -935,8 +935,12 @@ const COMMODITY_MOBILE_MAP_LAYERS: MapLayers = {
 // ============================================
 // Import Ireland variant config
 import { VARIANT_CONFIG as IRELAND_VARIANT_CONFIG } from './variants/ireland';
+// Import Adult Industry variant config
+import { VARIANT_CONFIG as ADULT_INDUSTRY_VARIANT_CONFIG } from './variants/adult-industry';
 
-export const DEFAULT_PANELS = SITE_VARIANT === 'happy' 
+export const DEFAULT_PANELS = SITE_VARIANT === 'adult-industry'
+  ? ADULT_INDUSTRY_VARIANT_CONFIG.panels
+  : SITE_VARIANT === 'happy' 
   ? HAPPY_PANELS 
   : SITE_VARIANT === 'tech' 
     ? TECH_PANELS 
@@ -948,29 +952,33 @@ export const DEFAULT_PANELS = SITE_VARIANT === 'happy'
           ? IRELAND_VARIANT_CONFIG.panels
           : FULL_PANELS;
 
-export const DEFAULT_MAP_LAYERS = SITE_VARIANT === 'happy' 
-  ? HAPPY_MAP_LAYERS 
-  : SITE_VARIANT === 'tech' 
-    ? TECH_MAP_LAYERS 
-    : SITE_VARIANT === 'finance' 
-      ? FINANCE_MAP_LAYERS 
-      : SITE_VARIANT === 'commodity'
-        ? COMMODITY_MAP_LAYERS
-        : SITE_VARIANT === 'ireland'
-          ? IRELAND_VARIANT_CONFIG.mapLayers
-          : FULL_MAP_LAYERS;
+export const DEFAULT_MAP_LAYERS = SITE_VARIANT === 'adult-industry'
+  ? ADULT_INDUSTRY_VARIANT_CONFIG.mapLayers
+  : SITE_VARIANT === 'happy' 
+    ? HAPPY_MAP_LAYERS 
+    : SITE_VARIANT === 'tech' 
+      ? TECH_MAP_LAYERS 
+      : SITE_VARIANT === 'finance' 
+        ? FINANCE_MAP_LAYERS 
+        : SITE_VARIANT === 'commodity'
+          ? COMMODITY_MAP_LAYERS
+          : SITE_VARIANT === 'ireland'
+            ? IRELAND_VARIANT_CONFIG.mapLayers
+            : FULL_MAP_LAYERS;
 
-export const MOBILE_DEFAULT_MAP_LAYERS = SITE_VARIANT === 'happy' 
-  ? HAPPY_MOBILE_MAP_LAYERS 
-  : SITE_VARIANT === 'tech' 
-    ? TECH_MOBILE_MAP_LAYERS 
-    : SITE_VARIANT === 'finance' 
-      ? FINANCE_MOBILE_MAP_LAYERS 
-      : SITE_VARIANT === 'commodity'
-        ? COMMODITY_MOBILE_MAP_LAYERS
-        : SITE_VARIANT === 'ireland'
-          ? IRELAND_VARIANT_CONFIG.mobileMapLayers
-          : FULL_MOBILE_MAP_LAYERS;
+export const MOBILE_DEFAULT_MAP_LAYERS = SITE_VARIANT === 'adult-industry'
+  ? ADULT_INDUSTRY_VARIANT_CONFIG.mobileMapLayers
+  : SITE_VARIANT === 'happy' 
+    ? HAPPY_MOBILE_MAP_LAYERS 
+    : SITE_VARIANT === 'tech' 
+      ? TECH_MOBILE_MAP_LAYERS 
+      : SITE_VARIANT === 'finance' 
+        ? FINANCE_MOBILE_MAP_LAYERS 
+        : SITE_VARIANT === 'commodity'
+          ? COMMODITY_MOBILE_MAP_LAYERS
+          : SITE_VARIANT === 'ireland'
+            ? IRELAND_VARIANT_CONFIG.mobileMapLayers
+            : FULL_MOBILE_MAP_LAYERS;
 
 /** Maps map-layer toggle keys to their data-freshness source IDs (single source of truth). */
 export const LAYER_TO_SOURCE: Partial<Record<keyof MapLayers, DataSourceId[]>> = {
