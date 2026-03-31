@@ -1,0 +1,224 @@
+/**
+ * Reference Articles Styles
+ *
+ * Styles for article cards linking to external reference content.
+ */
+
+/* Reference Section */
+.reference-section {
+  padding: 60px 20px;
+  background: #16213e;
+}
+
+.reference-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 16px;
+  color: white;
+}
+
+.reference-intro {
+  text-align: center;
+  color: #aaa;
+  font-size: 1rem;
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Article Grid */
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Article Card */
+.article-card {
+  background: #1a1a2e;
+  padding: 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(233, 69, 96, 0.3);
+  border-color: rgba(233, 69, 96, 0.5);
+}
+
+/* Article Type Badge */
+.article-type {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.article-type.guide {
+  background: rgba(0, 200, 255, 0.2);
+  color: #00c8ff;
+}
+
+.article-type.review {
+  background: rgba(233, 69, 96, 0.2);
+  color: #e94560;
+}
+
+.article-type.news {
+  background: rgba(255, 200, 0, 0.2);
+  color: #ffc800;
+}
+
+.article-type.overview {
+  background: rgba(150, 100, 255, 0.2);
+  color: #9664ff;
+}
+
+/* Article Title */
+.article-card h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.article-title-zh {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0 0 12px 0;
+}
+
+/* Article Summary */
+.article-summary {
+  color: #ccc;
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+  font-size: 0.95rem;
+  flex-grow: 1;
+}
+
+/* Article Meta */
+.article-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.article-date {
+  color: #888;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Article Topics */
+.article-topics {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.article-topics span {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+/* Link Arrow */
+.article-link-icon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.article-card:hover .article-link-icon {
+  opacity: 1;
+  transform: translateX(4px);
+  color: #e94560;
+}
+
+/* Empty State */
+.reference-empty {
+  text-align: center;
+  color: #666;
+  font-size: 1rem;
+  padding: 40px 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reference-section {
+    padding: 40px 15px;
+  }
+
+  .reference-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .article-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .article-card {
+    padding: 20px;
+  }
+
+  .article-card h4 {
+    font-size: 1.1rem;
+  }
+
+  .article-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .article-topics {
+    justify-content: flex-start;
+  }
+
+  .article-link-icon {
+    bottom: 16px;
+    right: 16px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-card {
+    padding: 16px;
+  }
+
+  .article-type {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+  }
+
+  .article-summary {
+    font-size: 0.9rem;
+  }
+}
