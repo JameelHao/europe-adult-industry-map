@@ -174,3 +174,125 @@ export function getFeaturedCountries(): string[] {
   const sorted = [...COUNTRY_REGULATIONS].sort((a, b) => b.overallScore - a.overallScore);
   return sorted.slice(0, 6).map((r) => r.countryName);
 }
+
+// ============================================================================
+// Country Card Data (FR #76)
+// ============================================================================
+
+/** Score labels for permissiveness rating */
+export const SCORE_LABELS: Record<number, string> = {
+  5: 'Very Permissive',
+  4: 'Permissive',
+  3: 'Moderate',
+  2: 'Restrictive',
+  1: 'Very Restrictive',
+};
+
+/** Country flag emojis by country code */
+export const FLAG_EMOJIS: Record<string, string> = {
+  AT: '🇦🇹',
+  BE: '🇧🇪',
+  BG: '🇧🇬',
+  CH: '🇨🇭',
+  CY: '🇨🇾',
+  CZ: '🇨🇿',
+  DE: '🇩🇪',
+  DK: '🇩🇰',
+  EE: '🇪🇪',
+  ES: '🇪🇸',
+  FI: '🇫🇮',
+  FR: '🇫🇷',
+  GB: '🇬🇧',
+  GR: '🇬🇷',
+  HR: '🇭🇷',
+  HU: '🇭🇺',
+  IE: '🇮🇪',
+  IT: '🇮🇹',
+  LT: '🇱🇹',
+  LU: '🇱🇺',
+  LV: '🇱🇻',
+  MT: '🇲🇹',
+  NL: '🇳🇱',
+  NO: '🇳🇴',
+  PL: '🇵🇱',
+  PT: '🇵🇹',
+  RO: '🇷🇴',
+  RS: '🇷🇸',
+  RU: '🇷🇺',
+  SE: '🇸🇪',
+  SI: '🇸🇮',
+  SK: '🇸🇰',
+  UA: '🇺🇦',
+};
+
+/** Country card data structure */
+export interface CountryCardData {
+  /** ISO country code */
+  countryCode: string;
+  /** Country name */
+  countryName: string;
+  /** Permissiveness score (1-5) */
+  score: 1 | 2 | 3 | 4 | 5;
+  /** Score label */
+  scoreLabel: string;
+  /** Has red light districts */
+  hasRedLightDistricts: boolean;
+  /** Has FKK clubs */
+  hasFKKClubs: boolean;
+  /** Number of cities in dataset */
+  cityCount: number;
+  /** Flag emoji */
+  flagEmoji: string;
+}
+
+/**
+ * Get all country cards data
+ */
+export function getCountryCards(): CountryCardData[] {
+  return COUNTRY_REGULATIONS.map((reg) => {
+    const cityCount = CITIES.filter((c) => c.country === reg.countryName).length;
+
+    return {
+      countryCode: reg.countryCode,
+      countryName: reg.countryName,
+      score: reg.overallScore,
+      scoreLabel: SCORE_LABELS[reg.overallScore] || 'Unknown',
+      hasRedLightDistricts: reg.hasRedLightDistricts,
+      hasFKKClubs: reg.hasFKKClubs,
+      cityCount,
+      flagEmoji: FLAG_EMOJIS[reg.countryCode] || '🏳️',
+    };
+  });
+}
+
+/**
+ * Get country cards sorted by score (highest first)
+ */
+export function getCountryCardsSortedByScore(): CountryCardData[] {
+  return getCountryCards().sort((a, b) => b.score - a.score);
+}
+
+/**
+ * Get country cards sorted by name
+ */
+export function getCountryCardsSortedByName(): CountryCardData[] {
+  return getCountryCards().sort((a, b) => a.countryName.localeCompare(b.countryName));
+}
+
+/**
+ * Get country cards filtered by features
+ */
+export function getCountryCardsWithFeatures(options: {
+  hasRedLightDistricts?: boolean;
+  hasFKKClubs?: boolean;
+}): CountryCardData[] {
+  return getCountryCards().filter((card) => {
+    if (options.hasRedLightDistricts !== undefined && card.hasRedLightDistricts !== options.hasRedLightDistricts) {
+      return false;
+    }
+    if (options.hasFKKClubs !== undefined && card.hasFKKClubs !== options.hasFKKClubs) {
+      return false;
+    }
+    return true;
+  });
+}

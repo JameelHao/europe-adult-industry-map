@@ -181,3 +181,141 @@ describe('getFeaturedCountries', () => {
     }
   });
 });
+
+// ============================================================================
+// Country Card Tests (FR #76)
+// ============================================================================
+
+describe('SCORE_LABELS', () => {
+  it('has labels for all scores 1-5', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+
+    assert.ok(mod.SCORE_LABELS[1], 'Should have label for 1');
+    assert.ok(mod.SCORE_LABELS[2], 'Should have label for 2');
+    assert.ok(mod.SCORE_LABELS[3], 'Should have label for 3');
+    assert.ok(mod.SCORE_LABELS[4], 'Should have label for 4');
+    assert.ok(mod.SCORE_LABELS[5], 'Should have label for 5');
+  });
+
+  it('score 5 is Very Permissive', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.SCORE_LABELS[5], 'Very Permissive');
+  });
+
+  it('score 1 is Very Restrictive', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.SCORE_LABELS[1], 'Very Restrictive');
+  });
+});
+
+describe('FLAG_EMOJIS', () => {
+  it('has flag for Germany', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.FLAG_EMOJIS['DE'], '🇩🇪');
+  });
+
+  it('has flag for Netherlands', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.FLAG_EMOJIS['NL'], '🇳🇱');
+  });
+
+  it('has multiple flags', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.ok(Object.keys(mod.FLAG_EMOJIS).length >= 20, 'Should have many flags');
+  });
+});
+
+describe('getCountryCards', () => {
+  it('returns array of country cards', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const cards = mod.getCountryCards();
+
+    assert.ok(Array.isArray(cards), 'Should return array');
+    assert.ok(cards.length > 0, 'Should have cards');
+  });
+
+  it('cards have required fields', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const cards = mod.getCountryCards();
+
+    for (const card of cards.slice(0, 5)) {
+      assert.ok(card.countryCode, 'Should have countryCode');
+      assert.ok(card.countryName, 'Should have countryName');
+      assert.ok(card.score >= 1 && card.score <= 5, 'Score should be 1-5');
+      assert.ok(card.scoreLabel, 'Should have scoreLabel');
+      assert.ok(typeof card.hasRedLightDistricts === 'boolean', 'Should have hasRedLightDistricts');
+      assert.ok(typeof card.hasFKKClubs === 'boolean', 'Should have hasFKKClubs');
+      assert.ok(typeof card.cityCount === 'number', 'Should have cityCount');
+      assert.ok(card.flagEmoji, 'Should have flagEmoji');
+    }
+  });
+
+  it('scoreLabel matches score', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const cards = mod.getCountryCards();
+
+    for (const card of cards) {
+      assert.strictEqual(
+        card.scoreLabel,
+        mod.SCORE_LABELS[card.score],
+        `${card.countryName} scoreLabel should match`
+      );
+    }
+  });
+});
+
+describe('getCountryCardsSortedByScore', () => {
+  it('returns cards sorted by score descending', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const cards = mod.getCountryCardsSortedByScore();
+
+    for (let i = 1; i < cards.length; i++) {
+      assert.ok(
+        cards[i - 1].score >= cards[i].score,
+        'Should be in descending order'
+      );
+    }
+  });
+});
+
+describe('getCountryCardsSortedByName', () => {
+  it('returns cards sorted by name', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const cards = mod.getCountryCardsSortedByName();
+
+    for (let i = 1; i < cards.length; i++) {
+      assert.ok(
+        cards[i - 1].countryName.localeCompare(cards[i].countryName) <= 0,
+        'Should be in alphabetical order'
+      );
+    }
+  });
+});
+
+describe('getCountryCardsWithFeatures', () => {
+  it('filters by hasRedLightDistricts', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const cards = mod.getCountryCardsWithFeatures({ hasRedLightDistricts: true });
+
+    for (const card of cards) {
+      assert.strictEqual(card.hasRedLightDistricts, true, 'Should have RLD');
+    }
+  });
+
+  it('filters by hasFKKClubs', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const cards = mod.getCountryCardsWithFeatures({ hasFKKClubs: true });
+
+    for (const card of cards) {
+      assert.strictEqual(card.hasFKKClubs, true, 'Should have FKK');
+    }
+  });
+
+  it('returns all when no filter', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const all = mod.getCountryCards();
+    const filtered = mod.getCountryCardsWithFeatures({});
+
+    assert.strictEqual(filtered.length, all.length, 'Should return all');
+  });
+});
