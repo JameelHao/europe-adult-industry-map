@@ -83,42 +83,50 @@ export function createCitiesLayer(options?: {
 }
 
 /**
- * Format city popup content
+ * Format city popup content as HTML
  */
 export function formatCityPopup(city: City): string {
-  const lines: string[] = [];
+  const parts: string[] = [];
 
   // Header
-  lines.push(`📍 **${city.name}**`);
-  lines.push(`🏳️ ${city.country}`);
+  parts.push(`<div class="popup-header">`);
+  parts.push(`<h3>🏙️ ${city.name}</h3>`);
+  parts.push(`<p class="popup-subtitle">${city.country}</p>`);
+  parts.push(`</div>`);
+
+  // Body
+  parts.push(`<div class="popup-body">`);
 
   // Red light district badge
   if (city.hasRedLightDistrict) {
-    lines.push('🔴 **Has Red Light District**');
+    parts.push(`<p class="city-badge"><strong>📍 Has Red Light District</strong></p>`);
   }
 
   // Services
   if (city.services.length > 0) {
-    lines.push('');
-    lines.push('**Services:**');
+    parts.push(`<p><strong>Services Available:</strong></p>`);
+    parts.push(`<div class="city-services">`);
     city.services.forEach((service: CityService) => {
       const icon = SERVICE_ICONS[service] || '•';
       const label = SERVICE_LABELS[service] || service;
-      lines.push(`${icon} ${label}`);
+      parts.push(`<span class="city-service">✅ ${icon} ${label}</span>`);
     });
+    parts.push(`</div>`);
   }
 
   // Population
   if (city.population) {
-    lines.push('');
-    lines.push(`👥 Population: ${city.population.toLocaleString()}`);
+    parts.push(`<p>👥 <strong>Population:</strong> ${city.population.toLocaleString()}</p>`);
   }
 
   // Guide link
-  lines.push('');
-  lines.push(`🔗 [City Guide](${city.guideUrl})`);
+  parts.push(
+    `<p><a href="${city.guideUrl}" target="_blank" rel="noopener">View Full Guide →</a></p>`
+  );
 
-  return lines.join('\n');
+  parts.push(`</div>`);
+
+  return parts.join('\n');
 }
 
 /**
