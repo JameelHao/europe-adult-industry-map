@@ -1,0 +1,313 @@
+/**
+ * Landing Page Styles
+ * 
+ * Styles for the adult-industry variant landing page.
+ */
+
+/* Container */
+.landing-page {
+  background: #0f0f1e;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.landing-hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 80px 20px;
+  text-align: center;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.landing-hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #e94560 0%, #ff6b6b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.landing-hero-subtitle {
+  font-size: 1.25rem;
+  color: #ccc;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.landing-cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.landing-cta-primary,
+.landing-cta-secondary {
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.landing-cta-primary {
+  background: rgba(233, 69, 96, 0.9);
+  color: white;
+}
+
+.landing-cta-primary:hover {
+  background: rgba(233, 69, 96, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(233, 69, 96, 0.4);
+}
+
+.landing-cta-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.landing-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Statistics Section */
+.landing-statistics {
+  background: #16213e;
+  padding: 40px 20px;
+}
+
+.landing-statistics-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.landing-stat-card {
+  text-align: center;
+  padding: 20px;
+}
+
+.landing-stat-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.landing-stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #e94560;
+  display: block;
+}
+
+.landing-stat-label {
+  font-size: 0.9rem;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Region Section */
+.landing-region {
+  padding: 60px 20px;
+}
+
+.landing-region:nth-child(even) {
+  background: #16213e;
+}
+
+.landing-region-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.landing-region-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.landing-region-subtitle {
+  font-size: 1.1rem;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.landing-region-count {
+  font-size: 0.9rem;
+  color: #e94560;
+  font-weight: 600;
+}
+
+/* Country Grid */
+.landing-country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Country Card */
+.landing-country-card {
+  background: #1a1a2e;
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.landing-country-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(233, 69, 96, 0.3);
+}
+
+.landing-card-flag {
+  font-size: 4rem;
+  margin-bottom: 15px;
+}
+
+.landing-card-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.landing-card-rating {
+  margin: 10px 0;
+}
+
+.landing-card-stars {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.landing-card-score-label {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.landing-card-features {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.landing-feature-tag {
+  background: rgba(233, 69, 96, 0.2);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #e94560;
+}
+
+.landing-feature-tag.fkk {
+  background: rgba(100, 149, 237, 0.2);
+  color: #6495ed;
+}
+
+.landing-card-cities {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* Footer */
+.landing-footer {
+  background: #0a0a14;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.landing-footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.landing-footer p {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
+
+.landing-footer-disclaimer {
+  font-size: 0.8rem !important;
+  color: #555 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .landing-hero {
+    padding: 60px 15px;
+    min-height: 50vh;
+  }
+
+  .landing-hero-title {
+    font-size: 2rem;
+  }
+
+  .landing-hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .landing-cta-primary,
+  .landing-cta-secondary {
+    padding: 12px 24px;
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  .landing-statistics-grid {
+    gap: 20px;
+  }
+
+  .landing-stat-value {
+    font-size: 2rem;
+  }
+
+  .landing-region-title {
+    font-size: 1.8rem;
+  }
+
+  .landing-country-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  .landing-country-card {
+    padding: 16px;
+  }
+
+  .landing-card-flag {
+    font-size: 3rem;
+  }
+
+  .landing-card-name {
+    font-size: 1.1rem;
+  }
+}
