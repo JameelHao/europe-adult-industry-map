@@ -49,6 +49,7 @@ export async function renderCountryDetailPage(containerId: string): Promise<void
   // Render sections
   container.appendChild(createHeaderSection(data));
   container.appendChild(createSummarySection(data));
+  container.appendChild(createVenuesSection(data));
   container.appendChild(createCitiesSection(data));
   container.appendChild(createLegalSection(data));
   container.appendChild(createFooterSection());
@@ -142,6 +143,32 @@ function createCitiesSection(data: CountryDetailData): HTMLElement {
     </div>
     ${data.cities.length > 12 ? `<p class="country-detail-more">+ ${data.cities.length - 12} more cities</p>` : ''}
   `;
+
+  return section;
+}
+
+/**
+ * Create venues section with venue cards
+ */
+function createVenuesSection(data: CountryDetailData): HTMLElement {
+  const section = document.createElement('section');
+  section.className = 'country-detail-venues';
+
+  // Check if we have extended data with venues
+  if (!data.extended || data.extended.venues.length === 0) {
+    section.innerHTML = `
+      <h2 class="country-detail-section-title">🏢 Notable Venues</h2>
+      <p class="country-detail-empty">Venue information coming soon.</p>
+    `;
+    return section;
+  }
+
+  // Dynamic import to avoid circular dependencies
+  const { createVenueGrid } = require('../VenueCard');
+  const venueGrid = createVenueGrid(data.extended.venues);
+
+  section.innerHTML = `<h2 class="country-detail-section-title">🏢 Notable Venues</h2>`;
+  section.appendChild(venueGrid);
 
   return section;
 }
