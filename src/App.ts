@@ -626,6 +626,14 @@ export class App {
       showProBanner(this.state.container);
     }
 
+    // Country Guide button (adult-industry variant only)
+    const countryGuideBtn = document.getElementById('countryGuideBtn');
+    if (countryGuideBtn && isAdultIndustryVariant()) {
+      countryGuideBtn.addEventListener('click', () => {
+        window.location.href = '/';
+      });
+    }
+
     const mobileGeoCoords = await geoCoordsPromise;
     if (mobileGeoCoords && this.state.map) {
       this.state.map.setCenter(mobileGeoCoords.lat, mobileGeoCoords.lon, 6);
