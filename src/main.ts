@@ -3,6 +3,7 @@ import './styles/happy-theme.css';
 import './styles/market-ticker.css';
 import './styles/daily-brief.css';
 import './styles/alert.css';
+import './styles/landing-page.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as Sentry from '@sentry/browser';
 import { inject } from '@vercel/analytics';
@@ -365,13 +366,35 @@ if (urlParams.get('settings') === '1') {
   );
 } else {
   installUtmInterceptor();
-  const app = new App('app');
-  app
-    .init()
-    .then(() => {
+
+  // Adult industry variant: check for landing page
+  const shouldShowLandingPage = async (): Promise<boolean> => {
+    try {
+      const { isAdultIndustryVariant } = await import('./config');
+      if (!isAdultIndustryVariant) return false;
+
+      const { shouldShowLanding } = await import('./config/variants/adult-industry/routing');
+      return shouldShowLanding();
+    } catch {
+      return false;
+    }
+  };
+
+  const initApp = async (): Promise<void> => {
+    const showLanding = await shouldShowLandingPage();
+
+    if (showLanding) {
+      const { renderLandingPage } = await import('./components/LandingPage');
+      await renderLandingPage('app');
       clearChunkReloadGuard(chunkReloadStorageKey);
-    })
-    .catch(console.error);
+    } else {
+      const app = new App('app');
+      await app.init();
+      clearChunkReloadGuard(chunkReloadStorageKey);
+    }
+  };
+
+  initApp().catch(console.error);
 }
 
 // Debug helpers for geo-convergence testing (remove in production)
