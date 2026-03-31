@@ -27,3 +27,6 @@ export * from './layers/fkk-clubs-layer';
 
 // Report exports
 export * from './report';
+
+// Search exports
+export * from './search';
