@@ -319,3 +319,148 @@ describe('getCountryCardsWithFeatures', () => {
     assert.strictEqual(filtered.length, all.length, 'Should return all');
   });
 });
+
+// ============================================================================
+// Region Sections Tests (FR #78)
+// ============================================================================
+
+describe('REGION_DEFINITIONS', () => {
+  it('has 4 regions', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.REGION_DEFINITIONS.length, 4);
+  });
+
+  it('has north region', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const north = mod.REGION_DEFINITIONS.find((r) => r.key === 'north');
+    assert.ok(north, 'Should have north region');
+    assert.strictEqual(north.title, 'North Europe');
+  });
+
+  it('has west region', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const west = mod.REGION_DEFINITIONS.find((r) => r.key === 'west');
+    assert.ok(west, 'Should have west region');
+    assert.strictEqual(west.title, 'West Europe');
+  });
+
+  it('has south region', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const south = mod.REGION_DEFINITIONS.find((r) => r.key === 'south');
+    assert.ok(south, 'Should have south region');
+    assert.strictEqual(south.title, 'South Europe');
+  });
+
+  it('has east region', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const east = mod.REGION_DEFINITIONS.find((r) => r.key === 'east');
+    assert.ok(east, 'Should have east region');
+    assert.strictEqual(east.title, 'East Europe');
+  });
+
+  it('each region has required fields', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+
+    for (const region of mod.REGION_DEFINITIONS) {
+      assert.ok(region.key, 'Should have key');
+      assert.ok(region.title, 'Should have title');
+      assert.ok(region.subtitle, 'Should have subtitle');
+      assert.ok(Array.isArray(region.countries), 'Should have countries array');
+      assert.ok(region.countries.length > 0, 'Should have at least one country');
+    }
+  });
+});
+
+describe('getCountriesByRegion', () => {
+  it('returns countries for north region', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const countries = mod.getCountriesByRegion('north');
+
+    assert.ok(Array.isArray(countries));
+    assert.ok(countries.includes('Denmark'));
+    assert.ok(countries.includes('Sweden'));
+  });
+
+  it('returns countries for west region', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const countries = mod.getCountriesByRegion('west');
+
+    assert.ok(countries.includes('Germany'));
+    assert.ok(countries.includes('Netherlands'));
+  });
+
+  it('returns empty array for invalid key', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    // @ts-expect-error - testing invalid key
+    const countries = mod.getCountriesByRegion('invalid');
+
+    assert.deepStrictEqual(countries, []);
+  });
+});
+
+describe('getRegionData', () => {
+  it('returns array of region data', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const data = mod.getRegionData();
+
+    assert.ok(Array.isArray(data));
+    assert.strictEqual(data.length, 4);
+  });
+
+  it('each region has required fields', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const data = mod.getRegionData();
+
+    for (const region of data) {
+      assert.ok(region.key, 'Should have key');
+      assert.ok(region.title, 'Should have title');
+      assert.ok(region.subtitle, 'Should have subtitle');
+      assert.ok(typeof region.countryCount === 'number', 'Should have countryCount');
+      assert.ok(Array.isArray(region.cards), 'Should have cards array');
+    }
+  });
+
+  it('cards are sorted by score within region', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const data = mod.getRegionData();
+
+    for (const region of data) {
+      if (region.cards.length > 1) {
+        for (let i = 1; i < region.cards.length; i++) {
+          assert.ok(
+            region.cards[i - 1].score >= region.cards[i].score,
+            `${region.key} cards should be sorted by score`
+          );
+        }
+      }
+    }
+  });
+});
+
+describe('getRegionByKey', () => {
+  it('returns region data for valid key', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const west = mod.getRegionByKey('west');
+
+    assert.ok(west);
+    assert.strictEqual(west.key, 'west');
+    assert.strictEqual(west.title, 'West Europe');
+  });
+
+  it('returns null for invalid key', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    // @ts-expect-error - testing invalid key
+    const invalid = mod.getRegionByKey('invalid');
+
+    assert.strictEqual(invalid, null);
+  });
+});
+
+describe('getRegionKeys', () => {
+  it('returns array of region keys', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const keys = mod.getRegionKeys();
+
+    assert.deepStrictEqual(keys, ['north', 'west', 'south', 'east']);
+  });
+});

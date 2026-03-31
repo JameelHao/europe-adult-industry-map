@@ -296,3 +296,130 @@ export function getCountryCardsWithFeatures(options: {
     return true;
   });
 }
+
+// ============================================================================
+// Region Sections (FR #78)
+// ============================================================================
+
+/** Region key type */
+export type RegionKey = 'north' | 'west' | 'south' | 'east';
+
+/** Region definition */
+export interface RegionDefinition {
+  /** Region key */
+  key: RegionKey;
+  /** Display title */
+  title: string;
+  /** Subtitle description */
+  subtitle: string;
+  /** Country names in this region */
+  countries: string[];
+}
+
+/** Region data with country cards */
+export interface RegionData {
+  /** Region key */
+  key: RegionKey;
+  /** Display title */
+  title: string;
+  /** Subtitle description */
+  subtitle: string;
+  /** Number of countries */
+  countryCount: number;
+  /** Country card data for this region */
+  cards: CountryCardData[];
+}
+
+/**
+ * Region definitions with country groupings
+ * Based on FR #78 requirements
+ */
+export const REGION_DEFINITIONS: RegionDefinition[] = [
+  {
+    key: 'north',
+    title: 'North Europe',
+    subtitle: 'Nordic countries with progressive regulations',
+    countries: ['Denmark', 'Finland', 'Norway', 'Sweden', 'United Kingdom'],
+  },
+  {
+    key: 'west',
+    title: 'West Europe',
+    subtitle: 'Home to the most permissive adult industries',
+    countries: ['Austria', 'Belgium', 'France', 'Germany', 'Netherlands', 'Switzerland'],
+  },
+  {
+    key: 'south',
+    title: 'South Europe',
+    subtitle: 'Mediterranean nightlife and culture',
+    countries: ['Albania', 'Croatia', 'Greece', 'Italy', 'Portugal', 'Serbia', 'Slovenia', 'Spain'],
+  },
+  {
+    key: 'east',
+    title: 'East Europe',
+    subtitle: 'Diverse regulations across former Eastern Bloc',
+    countries: [
+      'Belarus',
+      'Bulgaria',
+      'Czech Republic',
+      'Estonia',
+      'Hungary',
+      'Iceland',
+      'Ireland',
+      'Kosovo',
+      'Latvia',
+      'Lithuania',
+      'Luxembourg',
+      'Moldova',
+      'Monaco',
+      'Montenegro',
+      'Poland',
+      'Romania',
+      'Russia',
+      'Slovakia',
+      'Turkey',
+      'Ukraine',
+    ],
+  },
+];
+
+/**
+ * Get countries by region key
+ */
+export function getCountriesByRegion(key: RegionKey): string[] {
+  const region = REGION_DEFINITIONS.find((r) => r.key === key);
+  return region ? region.countries : [];
+}
+
+/**
+ * Get all region data with country cards
+ */
+export function getRegionData(): RegionData[] {
+  const allCards = getCountryCards();
+
+  return REGION_DEFINITIONS.map((def) => {
+    const cards = allCards.filter((card) => def.countries.includes(card.countryName));
+
+    return {
+      key: def.key,
+      title: def.title,
+      subtitle: def.subtitle,
+      countryCount: def.countries.length,
+      cards: cards.sort((a, b) => b.score - a.score), // Sort by score within region
+    };
+  });
+}
+
+/**
+ * Get region data by key
+ */
+export function getRegionByKey(key: RegionKey): RegionData | null {
+  const data = getRegionData();
+  return data.find((r) => r.key === key) || null;
+}
+
+/**
+ * Get all region keys
+ */
+export function getRegionKeys(): RegionKey[] {
+  return REGION_DEFINITIONS.map((r) => r.key);
+}
