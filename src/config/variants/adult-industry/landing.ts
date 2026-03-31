@@ -549,3 +549,67 @@ export function getAllFlagImages(): FlagImageSrcSet[] {
 export function hasCountryFlag(countryName: string): boolean {
   return countryName in COUNTRY_TO_FILENAME;
 }
+
+// ============================================================================
+// Header Navigation (FR #85)
+// ============================================================================
+
+/** Navigation button configuration */
+export interface NavButtonConfig {
+  /** Button text */
+  text: string;
+  /** Button icon (emoji) */
+  icon: string;
+  /** Target URL */
+  href: string;
+  /** Button title (tooltip) */
+  title: string;
+  /** Show icon only on mobile */
+  iconOnlyOnMobile: boolean;
+}
+
+/** Header navigation configuration */
+export interface HeaderNavConfig {
+  /** Country Guide button (map → landing) */
+  countryGuide: NavButtonConfig;
+  /** View Map button (landing → map) */
+  viewMap: NavButtonConfig;
+}
+
+/**
+ * Get Country Guide button configuration
+ * Used in map header to navigate to Landing Page
+ */
+export function getCountryGuideButton(): NavButtonConfig {
+  return {
+    text: 'Country Guide',
+    icon: '🌍',
+    href: '/?view=landing',
+    title: 'Browse countries by region',
+    iconOnlyOnMobile: true,
+  };
+}
+
+/**
+ * Get View Map button configuration
+ * Used in Landing Page to navigate back to map
+ */
+export function getViewMapButton(): NavButtonConfig {
+  return {
+    text: 'View Interactive Map',
+    icon: '🗺️',
+    href: '/?view=map',
+    title: 'Open the interactive map',
+    iconOnlyOnMobile: true,
+  };
+}
+
+/**
+ * Get header navigation configuration
+ */
+export function getHeaderNavConfig(): HeaderNavConfig {
+  return {
+    countryGuide: getCountryGuideButton(),
+    viewMap: getViewMapButton(),
+  };
+}

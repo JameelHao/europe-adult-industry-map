@@ -601,3 +601,106 @@ describe('hasCountryFlag', () => {
     assert.strictEqual(mod.hasCountryFlag('Atlantis'), false);
   });
 });
+
+// ============================================================================
+// Header Navigation Tests (FR #85)
+// ============================================================================
+
+describe('getCountryGuideButton', () => {
+  it('returns button configuration', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getCountryGuideButton();
+
+    assert.ok(btn.text, 'Should have text');
+    assert.ok(btn.icon, 'Should have icon');
+    assert.ok(btn.href, 'Should have href');
+    assert.ok(btn.title, 'Should have title');
+  });
+
+  it('has correct text', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getCountryGuideButton();
+
+    assert.strictEqual(btn.text, 'Country Guide');
+  });
+
+  it('has globe icon', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getCountryGuideButton();
+
+    assert.strictEqual(btn.icon, '🌍');
+  });
+
+  it('links to landing page', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getCountryGuideButton();
+
+    assert.ok(btn.href.includes('landing'), 'Should link to landing');
+  });
+
+  it('has iconOnlyOnMobile true', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getCountryGuideButton();
+
+    assert.strictEqual(btn.iconOnlyOnMobile, true);
+  });
+});
+
+describe('getViewMapButton', () => {
+  it('returns button configuration', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getViewMapButton();
+
+    assert.ok(btn.text, 'Should have text');
+    assert.ok(btn.icon, 'Should have icon');
+    assert.ok(btn.href, 'Should have href');
+    assert.ok(btn.title, 'Should have title');
+  });
+
+  it('has correct text', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getViewMapButton();
+
+    assert.strictEqual(btn.text, 'View Interactive Map');
+  });
+
+  it('has map icon', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getViewMapButton();
+
+    assert.strictEqual(btn.icon, '🗺️');
+  });
+
+  it('links to map view', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const btn = mod.getViewMapButton();
+
+    assert.ok(btn.href.includes('map'), 'Should link to map');
+  });
+});
+
+describe('getHeaderNavConfig', () => {
+  it('returns header nav configuration', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const config = mod.getHeaderNavConfig();
+
+    assert.ok(config.countryGuide, 'Should have countryGuide');
+    assert.ok(config.viewMap, 'Should have viewMap');
+  });
+
+  it('countryGuide matches getCountryGuideButton', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const config = mod.getHeaderNavConfig();
+    const btn = mod.getCountryGuideButton();
+
+    assert.deepStrictEqual(config.countryGuide, btn);
+  });
+
+  it('viewMap matches getViewMapButton', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const config = mod.getHeaderNavConfig();
+    const btn = mod.getViewMapButton();
+
+    assert.deepStrictEqual(config.viewMap, btn);
+  });
+});
