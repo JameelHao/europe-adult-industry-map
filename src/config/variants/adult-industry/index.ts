@@ -42,3 +42,6 @@ export * from './routing';
 
 // Country bounds exports
 export * from './country-bounds';
+
+// Country details exports
+export * from './country-details';
