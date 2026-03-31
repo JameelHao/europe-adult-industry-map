@@ -24,3 +24,6 @@ export * from './layers/factories-layer';
 export * from './layers/cities-layer';
 export * from './layers/red-light-districts-layer';
 export * from './layers/fkk-clubs-layer';
+
+// Report exports
+export * from './report';
