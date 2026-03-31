@@ -51,6 +51,7 @@ export async function renderCountryDetailPage(containerId: string): Promise<void
   container.appendChild(createSummarySection(data));
   container.appendChild(createVenuesSection(data));
   container.appendChild(createCitiesSection(data));
+  container.appendChild(createReferenceSection(data.countryCode));
   container.appendChild(createLegalSection(data));
   container.appendChild(createFooterSection());
 }
@@ -201,6 +202,49 @@ function formatPopulation(pop: number): string {
     return `${Math.round(pop / 1000)}K pop.`;
   }
   return `${pop} pop.`;
+}
+
+/**
+ * Create reference articles section
+ */
+function createReferenceSection(countryCode: string): HTMLElement {
+  const section = document.createElement('section');
+  section.className = 'reference-section';
+
+  // Dynamic import to avoid circular dependencies
+  const { getReferenceArticles, hasReferenceArticles } = require('@/config/variants/adult-industry/data/reference-content');
+
+  if (!hasReferenceArticles(countryCode)) {
+    section.innerHTML = `
+      <h2>📚 Detailed Guides & Reviews</h2>
+      <p class="reference-empty">Reference articles coming soon.</p>
+    `;
+    return section;
+  }
+
+  const articles = getReferenceArticles(countryCode);
+
+  section.innerHTML = `
+    <h2>📚 Detailed Guides & Reviews</h2>
+    <p class="reference-intro">In-depth articles and reviews from experienced travelers</p>
+    <div class="article-grid">
+      ${articles.map((article: { type: string; titleEn?: string; title: string; summary: string; date: string; topics?: string[]; url: string }) => `
+        <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="article-card">
+          <div class="article-type ${article.type.toLowerCase()}">${article.type}</div>
+          <h4>${article.titleEn || article.title}</h4>
+          ${article.titleEn && article.title !== article.titleEn ? `<p class="article-title-zh">${article.title}</p>` : ''}
+          <p class="article-summary">${article.summary}</p>
+          <div class="article-meta">
+            <span class="article-date">📅 ${article.date}</span>
+            ${article.topics ? `<div class="article-topics">${article.topics.map((t: string) => `<span>${t}</span>`).join('')}</div>` : ''}
+          </div>
+          <span class="article-link-icon">→</span>
+        </a>
+      `).join('')}
+    </div>
+  `;
+
+  return section;
 }
 
 /**
