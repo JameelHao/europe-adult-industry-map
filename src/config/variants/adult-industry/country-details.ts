@@ -10,6 +10,27 @@ import { RED_LIGHT_DISTRICTS } from './data/red-light-districts';
 import { FKK_CLUBS } from './data/fkk-clubs';
 import { FLAG_EMOJIS, SCORE_LABELS } from './landing';
 import { normalizeCountryCode } from './country-bounds';
+import {
+  getExtendedCountryDetailData,
+  hasExtendedCountryData,
+  type ExtendedCountryDetailData,
+  type ExtendedCityInfo,
+  type VenueDetail,
+  type DistrictDetail,
+  type LegalFramework,
+  type NewsItem,
+} from './data/country-details-data';
+
+// Re-export extended types for consumers
+export type {
+  ExtendedCountryDetailData,
+  ExtendedCityInfo,
+  VenueDetail,
+  DistrictDetail,
+  LegalFramework,
+  NewsItem,
+};
+export { getExtendedCountryDetailData, hasExtendedCountryData };
 
 /** City information for detail page */
 export interface CityInfo {
@@ -56,6 +77,8 @@ export interface CountryDetailData {
   cities: CityInfo[];
   /** Legal status */
   legalStatus: LegalStatusInfo;
+  /** Extended data (if available) */
+  extended?: ExtendedCountryDetailData;
 }
 
 /**
@@ -155,19 +178,25 @@ export function getCountryDetailData(countryCode: string): CountryDetailData | n
     return city?.country === regulation.countryName;
   }).length;
 
+  // Check for extended data
+  const extended = hasExtendedCountryData(regulation.countryCode)
+    ? getExtendedCountryDetailData(regulation.countryCode) ?? undefined
+    : undefined;
+
   return {
     countryCode: regulation.countryCode.toLowerCase(),
     countryName: regulation.countryName,
     flagEmoji: FLAG_EMOJIS[regulation.countryCode] || '🏳️',
     score: regulation.overallScore,
     scoreLabel: SCORE_LABELS[regulation.overallScore] || 'Unknown',
-    summary: getCountrySummary(normalized),
+    summary: extended?.description || getCountrySummary(normalized),
     hasRedLightDistricts: regulation.hasRedLightDistricts,
     hasFKKClubs: regulation.hasFKKClubs,
     rldCount,
     fkkCount,
     cities,
     legalStatus: getCountryLegalStatus(normalized, regulation),
+    extended,
   };
 }
 
