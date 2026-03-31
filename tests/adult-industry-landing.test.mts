@@ -464,3 +464,140 @@ describe('getRegionKeys', () => {
     assert.deepStrictEqual(keys, ['north', 'west', 'south', 'east']);
   });
 });
+
+// ============================================================================
+// Flag Images Tests (FR #79)
+// ============================================================================
+
+describe('FLAG_IMAGE_CONFIG', () => {
+  it('has basePath', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.FLAG_IMAGE_CONFIG.basePath, '/flags');
+  });
+
+  it('has dimensions', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.FLAG_IMAGE_CONFIG.width, 800);
+    assert.strictEqual(mod.FLAG_IMAGE_CONFIG.height, 600);
+  });
+
+  it('has formats', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.deepStrictEqual(mod.FLAG_IMAGE_CONFIG.formats, ['webp', 'jpg']);
+  });
+});
+
+describe('COUNTRY_TO_FILENAME', () => {
+  it('has mapping for Germany', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.COUNTRY_TO_FILENAME['Germany'], 'germany');
+  });
+
+  it('has mapping for Czech Republic', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.COUNTRY_TO_FILENAME['Czech Republic'], 'czech-republic');
+  });
+
+  it('has mapping for United Kingdom', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.COUNTRY_TO_FILENAME['United Kingdom'], 'united-kingdom');
+  });
+
+  it('has 39 countries', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(Object.keys(mod.COUNTRY_TO_FILENAME).length, 39);
+  });
+});
+
+describe('countryToFilename', () => {
+  it('converts known country', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.countryToFilename('Germany'), 'germany');
+  });
+
+  it('handles spaces', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.countryToFilename('Czech Republic'), 'czech-republic');
+  });
+
+  it('handles unknown country with fallback', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.countryToFilename('New Country'), 'new-country');
+  });
+});
+
+describe('getFlagImagePath', () => {
+  it('returns webp path by default', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const path = mod.getFlagImagePath('Germany');
+    assert.strictEqual(path, '/flags/germany.webp');
+  });
+
+  it('returns jpg path when specified', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const path = mod.getFlagImagePath('Germany', 'jpg');
+    assert.strictEqual(path, '/flags/germany.jpg');
+  });
+
+  it('handles spaces in country name', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const path = mod.getFlagImagePath('Czech Republic');
+    assert.strictEqual(path, '/flags/czech-republic.webp');
+  });
+});
+
+describe('getFlagImageSrcSet', () => {
+  it('returns srcset for country', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const srcset = mod.getFlagImageSrcSet('Germany');
+
+    assert.strictEqual(srcset.webp, '/flags/germany.webp');
+    assert.strictEqual(srcset.jpg, '/flags/germany.jpg');
+    assert.strictEqual(srcset.alt, 'Germany flag');
+    assert.strictEqual(srcset.width, 800);
+    assert.strictEqual(srcset.height, 600);
+  });
+
+  it('handles multi-word country', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const srcset = mod.getFlagImageSrcSet('United Kingdom');
+
+    assert.strictEqual(srcset.webp, '/flags/united-kingdom.webp');
+    assert.strictEqual(srcset.alt, 'United Kingdom flag');
+  });
+});
+
+describe('getAllFlagImages', () => {
+  it('returns array of srcsets', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const images = mod.getAllFlagImages();
+
+    assert.ok(Array.isArray(images));
+    assert.strictEqual(images.length, 39);
+  });
+
+  it('each image has required fields', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    const images = mod.getAllFlagImages();
+
+    for (const img of images.slice(0, 5)) {
+      assert.ok(img.webp, 'Should have webp');
+      assert.ok(img.jpg, 'Should have jpg');
+      assert.ok(img.alt, 'Should have alt');
+      assert.ok(typeof img.width === 'number', 'Should have width');
+      assert.ok(typeof img.height === 'number', 'Should have height');
+    }
+  });
+});
+
+describe('hasCountryFlag', () => {
+  it('returns true for known country', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.hasCountryFlag('Germany'), true);
+  });
+
+  it('returns false for unknown country', async () => {
+    const mod = await import('../src/config/variants/adult-industry/landing.ts');
+    assert.strictEqual(mod.hasCountryFlag('Atlantis'), false);
+  });
+});

@@ -423,3 +423,129 @@ export function getRegionByKey(key: RegionKey): RegionData | null {
 export function getRegionKeys(): RegionKey[] {
   return REGION_DEFINITIONS.map((r) => r.key);
 }
+
+// ============================================================================
+// Flag Images (FR #79)
+// ============================================================================
+
+/** Flag image configuration */
+export const FLAG_IMAGE_CONFIG = {
+  /** Base path for flag images */
+  basePath: '/flags',
+  /** Image width */
+  width: 800,
+  /** Image height */
+  height: 600,
+  /** Supported formats */
+  formats: ['webp', 'jpg'] as const,
+} as const;
+
+/**
+ * Country name to filename mapping
+ * Handles special characters and spaces
+ */
+export const COUNTRY_TO_FILENAME: Record<string, string> = {
+  Albania: 'albania',
+  Austria: 'austria',
+  Belarus: 'belarus',
+  Belgium: 'belgium',
+  Bulgaria: 'bulgaria',
+  Croatia: 'croatia',
+  'Czech Republic': 'czech-republic',
+  Denmark: 'denmark',
+  Estonia: 'estonia',
+  Finland: 'finland',
+  France: 'france',
+  Germany: 'germany',
+  Greece: 'greece',
+  Hungary: 'hungary',
+  Iceland: 'iceland',
+  Ireland: 'ireland',
+  Italy: 'italy',
+  Kosovo: 'kosovo',
+  Latvia: 'latvia',
+  Lithuania: 'lithuania',
+  Luxembourg: 'luxembourg',
+  Moldova: 'moldova',
+  Monaco: 'monaco',
+  Montenegro: 'montenegro',
+  Netherlands: 'netherlands',
+  Norway: 'norway',
+  Poland: 'poland',
+  Portugal: 'portugal',
+  Romania: 'romania',
+  Russia: 'russia',
+  Serbia: 'serbia',
+  Slovakia: 'slovakia',
+  Slovenia: 'slovenia',
+  Spain: 'spain',
+  Sweden: 'sweden',
+  Switzerland: 'switzerland',
+  Turkey: 'turkey',
+  Ukraine: 'ukraine',
+  'United Kingdom': 'united-kingdom',
+};
+
+/** Flag image source set */
+export interface FlagImageSrcSet {
+  /** WebP image path */
+  webp: string;
+  /** JPG image path (fallback) */
+  jpg: string;
+  /** Alt text */
+  alt: string;
+  /** Image width */
+  width: number;
+  /** Image height */
+  height: number;
+}
+
+/**
+ * Convert country name to filename
+ */
+export function countryToFilename(countryName: string): string {
+  // Check mapping first
+  if (COUNTRY_TO_FILENAME[countryName]) {
+    return COUNTRY_TO_FILENAME[countryName];
+  }
+  // Fallback: lowercase and replace spaces with hyphens
+  return countryName.toLowerCase().replace(/\s+/g, '-');
+}
+
+/**
+ * Get flag image path for a country
+ */
+export function getFlagImagePath(countryName: string, format: 'webp' | 'jpg' = 'webp'): string {
+  const filename = countryToFilename(countryName);
+  return `${FLAG_IMAGE_CONFIG.basePath}/${filename}.${format}`;
+}
+
+/**
+ * Get flag image srcset for a country
+ */
+export function getFlagImageSrcSet(countryName: string): FlagImageSrcSet {
+  const filename = countryToFilename(countryName);
+  const { basePath, width, height } = FLAG_IMAGE_CONFIG;
+
+  return {
+    webp: `${basePath}/${filename}.webp`,
+    jpg: `${basePath}/${filename}.jpg`,
+    alt: `${countryName} flag`,
+    width,
+    height,
+  };
+}
+
+/**
+ * Get all flag images for all countries in dataset
+ */
+export function getAllFlagImages(): FlagImageSrcSet[] {
+  return Object.keys(COUNTRY_TO_FILENAME).map((country) => getFlagImageSrcSet(country));
+}
+
+/**
+ * Check if a country has a flag mapping
+ */
+export function hasCountryFlag(countryName: string): boolean {
+  return countryName in COUNTRY_TO_FILENAME;
+}
