@@ -45,11 +45,43 @@ export function shouldShowLanding(searchString?: string): boolean {
 
 /**
  * Check if map view should be shown
- * Map shows when view=map or country param is set
+ * Map shows when view=map or (country with &map param)
  */
 export function shouldShowMap(searchString?: string): boolean {
   const { view, country } = parseRoute(searchString);
-  return view === 'map' || !!country;
+  // Direct map view
+  if (view === 'map') return true;
+  // Country detail + map param
+  if (country) {
+    const search = searchString !== undefined ? searchString : (typeof window !== 'undefined' ? window.location.search : '');
+    const params = new URLSearchParams(search);
+    return params.has('map');
+  }
+  return false;
+}
+
+/**
+ * Check if country detail page should be shown
+ * Detail page shows when country param is set but no &map param
+ */
+export function shouldShowCountryDetail(searchString?: string): boolean {
+  const { country } = parseRoute(searchString);
+  if (!country) return false;
+  const search = searchString !== undefined ? searchString : (typeof window !== 'undefined' ? window.location.search : '');
+  const params = new URLSearchParams(search);
+  return !params.has('map');
+}
+
+/**
+ * Check if country should be focused on map
+ * Returns true when country param with &map
+ */
+export function shouldFocusCountryOnMap(searchString?: string): boolean {
+  const { country } = parseRoute(searchString);
+  if (!country) return false;
+  const search = searchString !== undefined ? searchString : (typeof window !== 'undefined' ? window.location.search : '');
+  const params = new URLSearchParams(search);
+  return params.has('map');
 }
 
 /**
@@ -61,10 +93,17 @@ export function getCountryToFocus(searchString?: string): string | null {
 }
 
 /**
- * Build URL for country view
+ * Build URL for country detail page
  */
 export function buildCountryUrl(countryCode: string): string {
   return `/?country=${countryCode.toLowerCase()}`;
+}
+
+/**
+ * Build URL for country map view (with &map param)
+ */
+export function buildCountryMapUrl(countryCode: string): string {
+  return `/?country=${countryCode.toLowerCase()}&map`;
 }
 
 /**
@@ -82,11 +121,20 @@ export function buildLandingUrl(): string {
 }
 
 /**
- * Navigate to country view (browser only)
+ * Navigate to country detail page (browser only)
  */
 export function goToCountry(countryCode: string): void {
   if (typeof window !== 'undefined') {
     window.location.href = buildCountryUrl(countryCode);
+  }
+}
+
+/**
+ * Navigate to country map view (browser only)
+ */
+export function goToCountryMap(countryCode: string): void {
+  if (typeof window !== 'undefined') {
+    window.location.href = buildCountryMapUrl(countryCode);
   }
 }
 

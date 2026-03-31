@@ -4,6 +4,7 @@ import './styles/market-ticker.css';
 import './styles/daily-brief.css';
 import './styles/alert.css';
 import './styles/landing-page.css';
+import './styles/country-detail-page.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as Sentry from '@sentry/browser';
 import { inject } from '@vercel/analytics';
@@ -367,25 +368,34 @@ if (urlParams.get('settings') === '1') {
 } else {
   installUtmInterceptor();
 
-  // Adult industry variant: check for landing page
-  const shouldShowLandingPage = async (): Promise<boolean> => {
+  // Adult industry variant: check routing
+  type RouteType = 'landing' | 'countryDetail' | 'map';
+
+  const getRouteType = async (): Promise<RouteType> => {
     try {
       const { isAdultIndustryVariant } = await import('./config');
-      if (!isAdultIndustryVariant) return false;
+      if (!isAdultIndustryVariant) return 'map';
 
-      const { shouldShowLanding } = await import('./config/variants/adult-industry/routing');
-      return shouldShowLanding();
+      const routing = await import('./config/variants/adult-industry/routing');
+
+      if (routing.shouldShowLanding()) return 'landing';
+      if (routing.shouldShowCountryDetail()) return 'countryDetail';
+      return 'map';
     } catch {
-      return false;
+      return 'map';
     }
   };
 
   const initApp = async (): Promise<void> => {
-    const showLanding = await shouldShowLandingPage();
+    const routeType = await getRouteType();
 
-    if (showLanding) {
+    if (routeType === 'landing') {
       const { renderLandingPage } = await import('./components/LandingPage');
       await renderLandingPage('app');
+      clearChunkReloadGuard(chunkReloadStorageKey);
+    } else if (routeType === 'countryDetail') {
+      const { renderCountryDetailPage } = await import('./components/CountryDetailPage');
+      await renderCountryDetailPage('app');
       clearChunkReloadGuard(chunkReloadStorageKey);
     } else {
       const app = new App('app');

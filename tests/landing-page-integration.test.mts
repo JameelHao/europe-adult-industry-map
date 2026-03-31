@@ -46,9 +46,16 @@ describe('Routing Integration', () => {
     assert.strictEqual(mod.shouldShowMap('?view=map'), true);
   });
 
-  it('shouldShowMap returns true for ?country=germany', async () => {
+  it('shouldShowMap returns false for ?country=germany (detail page)', async () => {
     const mod = await import('../src/config/variants/adult-industry/routing.ts');
-    assert.strictEqual(mod.shouldShowMap('?country=germany'), true);
+    // FR #93: /?country=X now goes to country detail page
+    assert.strictEqual(mod.shouldShowMap('?country=germany'), false);
+  });
+
+  it('shouldShowMap returns true for ?country=germany&map', async () => {
+    const mod = await import('../src/config/variants/adult-industry/routing.ts');
+    // FR #93: /?country=X&map goes to map
+    assert.strictEqual(mod.shouldShowMap('?country=germany&map'), true);
   });
 });
 
