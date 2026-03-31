@@ -260,6 +260,26 @@
   color: #555 !important;
 }
 
+/* Country Guide Button (FR #88) */
+.country-guide-btn {
+  background: rgba(233, 69, 96, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 10px;
+}
+
+.country-guide-btn:hover {
+  background: rgba(233, 69, 96, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .landing-hero {
@@ -308,6 +328,12 @@
   }
 
   .landing-card-name {
+    font-size: 1.1rem;
+  }
+
+  /* Country Guide button on mobile */
+  .country-guide-btn {
+    padding: 8px 12px;
     font-size: 1.1rem;
   }
 }
